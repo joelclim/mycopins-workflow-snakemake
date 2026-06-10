@@ -17,7 +17,8 @@ rule all:
         # Subsequent target rules can be specified below. They should start with all_*.
         expand("results/tables/{transect}_cleaned_counts.csv", transect=TRANSECTS),
         expand("results/tables/{transect}_cleaned_clusters.csv", transect=TRANSECTS),
-        expand("results/tables/{transect}_complete_clusters.csv", transect=TRANSECTS)
+        expand("results/tables/{transect}_complete_clusters.csv", transect=TRANSECTS),
+        expand("results/tables/{transect}_complete_counts.csv", transect=TRANSECTS)
 
 
 include: "rules/clean.smk"
