@@ -4,7 +4,7 @@
 # Usage:
 #   Rscript identify_clusters.R <transect> <config file> <cleaned_clusters_file> <output_file>
 # Example:
-#   Rscript identify_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv, results/tables/fa23_transectC_complete_clusters.csv
+#   Rscript identify_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv results/tables/fa23_transectC_complete_clusters.csv
 
 source("workflow/scripts/normalize_name.R")
 source("workflow/scripts/get_gbif_accepted_name.R")

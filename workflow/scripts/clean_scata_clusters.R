@@ -170,6 +170,10 @@ main <- function() {
     out_all_clusters_file = args$output_file
   )
 
+  write.csv(result,
+            file = args$output_file,
+            row.names = FALSE, fileEncoding = "UTF-8")
+
   message("Done. Output written to: ", args$output_file)
 }
 
