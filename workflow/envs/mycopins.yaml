@@ -1,0 +1,15 @@
+# conda environments needed for the workflow should be stored here.
+name: mycopins
+channels:
+  - conda-forge
+  - base
+  - bioconda
+  - R
+dependencies:
+  - r-base=4.5.3
+  - r-hms=1.1.4
+  - r-rgbif=3.8.5
+  - r-readr=2.2.0
+  - r-tidyverse=2.0.0
+  - r-yaml=2.3.12
+  - snakemake=9.22.0

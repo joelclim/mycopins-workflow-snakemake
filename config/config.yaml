@@ -1,0 +1,22 @@
+# This file should contain everything to configure the workflow on a global scale.
+# In case of sample based data, it should be complemented by a samples.tsv file that contains
+# one row per sample. It can be parsed easily via pandas.
+samples: "config/samples.tsv"
+raw_dir: "data/raw"
+processed_dir: "data/processed"
+results_data_dir: "results/tables"
+transects:
+  fa23_transectC:
+    dataset_name: "FA23-C-Mycopins"
+    counts_file: "data/raw/FA23-transectC/scata6398/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/FA23-transectC/scata6398/all_clusters_scata6398.txt"
+    environnment_file: "data/raw/FA23-transectC/FA23-transectC-env.csv"
+    cleaned_counts_qc_file: "data/processed/FA23-transectC_cleaned_counts_qc.csv"
+    blast_results_file: "data/raw/FA23-transectC/blast_consolidated.csv"
+  sp24_transectC:
+    dataset_name: "SP24-transectC"
+    counts_file: "data/raw/SP24-transectC/scata6471/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/SP24-transectC/scata6471/all_clusters_scata6471.txt"
+    environnment_file: "data/raw/SP24-transectC/SP24-transectC-env.csv"
+    cleaned_counts_qc_file: "data/processed/SP24-transectC_cleaned_counts_qc.csv"
+    blast_results_file: "data/raw/SP24-transectC/blast_consolidated.csv"
