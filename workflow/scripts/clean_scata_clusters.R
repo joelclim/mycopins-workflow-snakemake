@@ -6,6 +6,8 @@
 # Example:
 #   Rscript clean_scata_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv
 
+source("workflow/scripts/script_helpers.R")
+
 clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
   # Open the input file for reading
   in_con <- file(in_all_clusters_file, "r")
@@ -94,73 +96,22 @@ suppressPackageStartupMessages(if (!require("dplyr")) install.packages("dplyr"))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
-suppressPackageStartupMessages(if (!require("yaml")) install.packages("yaml"))
-suppressPackageStartupMessages(library(yaml))
-
 usage <- "Usage: Rscript clean_scata_clusters.R <transect> <config file> <output_file>"
-
-abort <- function(message_text) {
-  stop(message_text, call. = FALSE)
-}
-
-parse_args <- function(args) {
-  if (length(args) != 3) {
-    abort(usage)
-  }
-
-  list(
-    transect = args[[1]],
-    config_file = args[[2]],
-    output_file = args[[3]]
-  )
-}
-
-load_transect_config <- function(config_file, transect) {
-  config <- yaml::yaml.load_file(config_file)
-  transect_config <- config$transects[[transect]]
-
-  if (is.null(transect_config)) {
-    abort(paste0("Unknown transect in config: ", transect))
-  }
-
-  context <- c(config[names(config) != "transects"], transect_config)
-
-  list(
-    cluster_file = resolve_config_value(transect_config$cluster_file, context)
-  )
-}
-
-resolve_config_value <- function(value, context) {
-  if (!is.character(value) || length(value) != 1) {
-    return(value)
-  }
-
-  matches <- gregexpr("\\$\\{[^}]+\\}", value, perl = TRUE)
-  placeholders <- regmatches(value, matches)[[1]]
-
-  if (length(placeholders) == 0) {
-    return(value)
-  }
-
-  resolved <- value
-  for (placeholder in placeholders) {
-    key <- sub("^\\$\\{([^}]+)\\}$", "\\1", placeholder)
-    replacement <- context[[key]]
-    if (is.null(replacement)) {
-      abort(paste0("Unknown config placeholder: ", placeholder))
-    }
-    resolved <- gsub(placeholder, replacement, resolved, fixed = TRUE)
-  }
-
-  resolved
-}
 
 # ------------------
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_args(commandArgs(trailingOnly = TRUE))
-  transect_config <- load_transect_config(args$config_file, args$transect)
+  args <- parse_named_args(
+    commandArgs(trailingOnly = TRUE),
+    c("transect", "config_file", "output_file"),
+    usage
+  )
+  transect_config <- load_transect_config(
+    args$config_file,
+    args$transect,
+    c("cluster_file")
+  )
 
   message("Processing transect: ", args$transect)
   message("Scata clusters file: ", transect_config$cluster_file)

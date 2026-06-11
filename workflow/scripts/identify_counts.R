@@ -37,32 +37,25 @@ identify_counts <- function(counts_df,
 # -------------------------------
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
+source("workflow/scripts/script_helpers.R")
 
 usage <- "Usage: Rscript identify_counts.R <cleaned_counts_file> <complete_clusters_file> <output_file>"
-
-abort <- function(message_text) {
-  stop(message_text, call. = FALSE)
-}
-
-parse_args <- function(args) {
-  if (length(args) != 5) {
-    abort(usage)
-  }
-
-  list(
-    cleaned_counts_file = args[[1]],
-    complete_clusters_file = args[[2]],
-    out_complete_counts_file = args[[3]],
-    out_mycopins_environment_file = args[[4]],
-    out_mycopins_community_file = args[[5]]
-  )
-}
 
 # ------------------
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_args(commandArgs(trailingOnly = TRUE))
+  args <- parse_named_args(
+    commandArgs(trailingOnly = TRUE),
+    c(
+      "cleaned_counts_file",
+      "complete_clusters_file",
+      "out_complete_counts_file",
+      "out_mycopins_environment_file",
+      "out_mycopins_community_file"
+    ),
+    usage
+  )
 
   message("   Cleaned counts file: ", args$cleaned_counts_file)
   message("Complete clusters file: ", args$complete_clusters_file)
@@ -74,18 +67,20 @@ main <- function() {
   complete_clusters_df <- read_csv(args$complete_clusters_file,
                                    show_col_types = FALSE,
                                    locale = locale(encoding = "UTF-8"))
-  complete_counts_df <- identify_counts(cleaned_counts_df, complete_clusters_df)
+  identified_counts_df <- identify_counts(cleaned_counts_df,
+                                          complete_clusters_df)
 
-  write.csv(complete_counts_df, file = args$out_complete_counts_file,
-            row.names = FALSE, fileEncoding = "UTF-8")
-
-  sep_index <- which(names(complete_counts_df) == "_Splitter_")
-  environment_df <- complete_counts_df[, 1:(sep_index-1)]
+  sep_index <- which(names(identified_counts_df) == "_Splitter_")
+  environment_df <- identified_counts_df[, 1:(sep_index-1)]
   write.csv(environment_df, file = args$out_mycopins_environment_file,
             row.names = FALSE, fileEncoding = "UTF-8")
 
-  community_df <- complete_counts_df[, (sep_index+1):ncol(complete_counts_df)]
+  community_df <- identified_counts_df[, (sep_index+1):ncol(identified_counts_df)]
   write.csv(community_df, file = args$out_mycopins_community_file,
+            row.names = FALSE, fileEncoding = "UTF-8")
+
+  complete_counts_df <- identified_counts_df[, -which(names(identified_counts_df) == "_Splitter_")]
+  write.csv(complete_counts_df, file = args$out_complete_counts_file,
             row.names = FALSE, fileEncoding = "UTF-8")
 
   message("Done. Outputs written to: ",
