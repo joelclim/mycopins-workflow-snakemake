@@ -46,18 +46,22 @@ resolve_config_value <- function(value, context, abort_fn = abort_script) {
   resolved
 }
 
-# Resolve the requested batch fields against top-level and batch-local config values.
-load_batch_config <- function(config_file, batch, fields, abort_fn = abort_script) {
+# Load a specific batch config section and resolve its fields using the global config context.
+load_config <- function(config_file, key_group, key, fields, abort_fn = abort_script) {
   config <- load_yaml_config(config_file)
-  batch_config <- config$batches[[batch]]
+  key_config <- config[[key_group]][[key]]
 
-  if (is.null(batch_config)) {
-    abort_fn(paste0("Unknown batch in config: ", batch))
+  if (is.null(key_config)) {
+    abort_fn(paste0("Unknown ", key_group, " in config: ", key))
   }
 
-  context <- c(config[names(config) != "batches"], batch_config)
+  if (is.null(fields)) {
+    return(key_config)
+  }
+
+  context <- c(config[names(config) != key_group], key_config)
   resolved <- lapply(fields, function(field) {
-    resolve_config_value(batch_config[[field]], context, abort_fn)
+    resolve_config_value(key_config[[field]], context, abort_fn)
   })
 
   names(resolved) <- fields

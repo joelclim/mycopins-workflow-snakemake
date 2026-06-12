@@ -302,8 +302,9 @@ main <- function() {
       "cleaned_counts_qc_file"),
     usage
   )
-  batch_config <- load_batch_config(
+  batch_config <- load_config(
     args$config_file,
+    "batches",
     args$batch,
     c("dataset_name", "counts_file", "environnment_file")
   )

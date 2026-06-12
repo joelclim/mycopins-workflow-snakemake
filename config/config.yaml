@@ -67,6 +67,10 @@ batches:
     environnment_file: "data/raw/FA24-transectB-4/FA24-transectB-4-env.csv"
     blast_results_file: "data/raw/FA24-transectB-4/blast_consolidated.csv"
 transects:
-  transectA: ["sp24_transectA-1", "sp24_transectA-2", "su24_transectA-1", "su24_transectA-2"]
-  transectB: ["fa24_transectB_1", "fa24_transectB_2", "fa24_transectB_3", "fa24_transectB_4"]
+  sp24_transectA: ["sp24_transectA-1", "sp24_transectA-2"]
+  su24_transectA: ["su24_transectA-1", "su24_transectA-2"]
+  transectA: ["sp24_transectA", "su24_transectA"]
+  fa2412_transectB: ["fa24_transectB_1", "fa24_transectB_2"]
+  fa2334_transectB: ["fa24_transectB_3", "fa24_transectB_4"]
+  transectB: ["fa2412_transectB", "fa2334_transectB"]
   transectC: ["fa23_transectC", "sp24_transectC"]

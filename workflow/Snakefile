@@ -21,8 +21,10 @@ rule all:
         expand("results/tables/{batch}_cleaned_counts.csv", batch=BATCHES),
         expand("results/tables/{batch}_cleaned_clusters.csv", batch=BATCHES),
         expand("results/tables/{batch}_complete_clusters.csv", batch=BATCHES),
-        expand("results/tables/{batch}_complete_counts.csv", batch=BATCHES)
+        expand("results/tables/mycopins_{transect}_environment.csv", transect=TRANSECTS),
+        expand("results/tables/mycopins_{transect}_community.csv", transect=TRANSECTS)
 
 
 include: "rules/clean.smk"
 include: "rules/identify.smk"
+include: "rules/merge.smk"

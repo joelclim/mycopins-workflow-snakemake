@@ -107,8 +107,9 @@ main <- function() {
     c("batch", "config_file", "output_file"),
     usage
   )
-  batch_config <- load_batch_config(
+  batch_config <- load_config(
     args$config_file,
+    "batches",
     args$batch,
     c("cluster_file")
   )
