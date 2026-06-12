@@ -2,7 +2,7 @@
 
 # Create a clean clusters data frame for downstream analyses.
 # Usage:
-#   Rscript clean_scata_clusters.R <transect> <config file> <output_file>
+#   Rscript clean_scata_clusters.R <batch> <config file> <output_file>
 # Example:
 #   Rscript clean_scata_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv
 
@@ -96,7 +96,7 @@ suppressPackageStartupMessages(if (!require("dplyr")) install.packages("dplyr"))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
-usage <- "Usage: Rscript clean_scata_clusters.R <transect> <config file> <output_file>"
+usage <- "Usage: Rscript clean_scata_clusters.R <batch> <config file> <output_file>"
 
 # ------------------
 # The main function
@@ -104,20 +104,20 @@ usage <- "Usage: Rscript clean_scata_clusters.R <transect> <config file> <output
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("transect", "config_file", "output_file"),
+    c("batch", "config_file", "output_file"),
     usage
   )
-  transect_config <- load_transect_config(
+  batch_config <- load_batch_config(
     args$config_file,
-    args$transect,
+    args$batch,
     c("cluster_file")
   )
 
-  message("Processing transect: ", args$transect)
-  message("Scata clusters file: ", transect_config$cluster_file)
+  message("   Processing batch: ", args$batch)
+  message("Scata clusters file: ", batch_config$cluster_file)
 
   result <- clean_clusters(
-    in_all_clusters_file = transect_config$cluster_file,
+    in_all_clusters_file = batch_config$cluster_file,
     out_all_clusters_file = args$output_file
   )
 

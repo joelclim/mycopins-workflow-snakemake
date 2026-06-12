@@ -2,7 +2,7 @@
 
 # Identify the genus-species for each cluster based on the top BLAST match, and add this information to the cluster data frame.
 # Usage:
-#   Rscript identify_clusters.R <transect> <config file> <cleaned_clusters_file> <output_file>
+#   Rscript identify_clusters.R <batch> <config file> <cleaned_clusters_file> <output_file>
 # Example:
 #   Rscript identify_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv results/tables/fa23_transectC_complete_clusters.csv
 
@@ -20,7 +20,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
 
-usage <- "Usage: Rscript identify_clusters.R <transect> <config file> <output_file>"
+usage <- "Usage: Rscript identify_clusters.R <batch> <config file> <output_file>"
 
 # ------------------
 # The main function
@@ -28,22 +28,22 @@ usage <- "Usage: Rscript identify_clusters.R <transect> <config file> <output_fi
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("transect", "config_file", "cleaned_clusters_file", "output_file"),
+    c("batch", "config_file", "cleaned_clusters_file", "output_file"),
     usage
   )
-  transect_config <- load_transect_config(
+  batch_config <- load_batch_config(
     args$config_file,
-    args$transect,
+    args$batch,
     c("blast_results_file")
   )
 
-  message("  Processing transect: ", args$transect)
+  message("     Processing batch: ", args$batch)
   message("Cleaned clusters file: ", args$cleaned_clusters_file)
-  message("   Blast results file: ", transect_config$blast_results_file)
+  message("   Blast results file: ", batch_config$blast_results_file)
 
-  blast_results_df <- read_csv(transect_config$blast_results_file,
-                              show_col_types = FALSE,
-                              locale = locale(encoding = "UTF-8"))
+  blast_results_df <- read_csv(batch_config$blast_results_file,
+                               show_col_types = FALSE,
+                               locale = locale(encoding = "UTF-8"))
   top_match_df <- top_blast_results_by_cluster(blast_results_df)
 
   cleaned_clusters_df <- read_csv(args$cleaned_clusters_file,

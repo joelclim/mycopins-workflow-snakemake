@@ -46,18 +46,18 @@ resolve_config_value <- function(value, context, abort_fn = abort_script) {
   resolved
 }
 
-# Resolve the requested transect fields against top-level and transect-local config values.
-load_transect_config <- function(config_file, transect, fields, abort_fn = abort_script) {
+# Resolve the requested batch fields against top-level and batch-local config values.
+load_batch_config <- function(config_file, batch, fields, abort_fn = abort_script) {
   config <- load_yaml_config(config_file)
-  transect_config <- config$transects[[transect]]
+  batch_config <- config$batches[[batch]]
 
-  if (is.null(transect_config)) {
-    abort_fn(paste0("Unknown transect in config: ", transect))
+  if (is.null(batch_config)) {
+    abort_fn(paste0("Unknown batch in config: ", batch))
   }
 
-  context <- c(config[names(config) != "transects"], transect_config)
+  context <- c(config[names(config) != "batches"], batch_config)
   resolved <- lapply(fields, function(field) {
-    resolve_config_value(transect_config[[field]], context, abort_fn)
+    resolve_config_value(batch_config[[field]], context, abort_fn)
   })
 
   names(resolved) <- fields

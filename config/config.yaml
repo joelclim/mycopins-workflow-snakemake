@@ -5,18 +5,68 @@ samples: "config/samples.tsv"
 raw_dir: "data/raw"
 processed_dir: "data/processed"
 results_data_dir: "results/tables"
-transects:
+batches:
   fa23_transectC:
     dataset_name: "FA23-C-Mycopins"
     counts_file: "data/raw/FA23-transectC/scata6398/all_tag_by_cluster_counts.txt"
     cluster_file: "data/raw/FA23-transectC/scata6398/all_clusters_scata6398.txt"
     environnment_file: "data/raw/FA23-transectC/FA23-transectC-env.csv"
-    cleaned_counts_qc_file: "data/processed/FA23-transectC_cleaned_counts_qc.csv"
     blast_results_file: "data/raw/FA23-transectC/blast_consolidated.csv"
   sp24_transectC:
     dataset_name: "SP24-transectC"
     counts_file: "data/raw/SP24-transectC/scata6471/all_tag_by_cluster_counts.txt"
     cluster_file: "data/raw/SP24-transectC/scata6471/all_clusters_scata6471.txt"
     environnment_file: "data/raw/SP24-transectC/SP24-transectC-env.csv"
-    cleaned_counts_qc_file: "data/processed/SP24-transectC_cleaned_counts_qc.csv"
     blast_results_file: "data/raw/SP24-transectC/blast_consolidated.csv"
+  sp24_transectA-1:
+    dataset_name: "SP24-transectA-1"
+    counts_file: "data/raw/SP24-transectA-1/scata6474/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/SP24-transectA-1/scata6474/all_clusters_scata6474.txt"
+    environnment_file: "data/raw/SP24-transectA-1/SP24-transectA-1-env.csv"
+    blast_results_file: "data/raw/SP24-transectA-1/blast_consolidated.csv"
+  sp24_transectA-2:
+    dataset_name: "SP24-transectA-2"
+    counts_file: "data/raw/SP24-transectA-2/scata6475/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/SP24-transectA-2/scata6475/all_clusters_scata6475.txt"
+    environnment_file: "data/raw/SP24-transectA-2/SP24-transectA-2-env.csv"
+    blast_results_file: "data/raw/SP24-transectA-2/blast_consolidated.csv"
+  su24_transectA-1:
+    dataset_name: "SU24-transectA-1"
+    counts_file: "data/raw/SU24-transectA-1/scata6540/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/SU24-transectA-1/scata6540/all_clusters_scata6540.txt"
+    environnment_file: "data/raw/SU24-transectA-1/SU24-transectA-1-env.csv"
+    blast_results_file: "data/raw/SU24-transectA-1/blast_consolidated.csv"
+  su24_transectA-2:
+    dataset_name: "SU24-transectA-2"
+    counts_file: "data/raw/SU24-transectA-2/scata6541/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/SU24-transectA-2/scata6541/all_clusters_scata6541.txt"
+    environnment_file: "data/raw/SU24-transectA-2/SU24-transectA-2-env.csv"
+    blast_results_file: "data/raw/SU24-transectA-2/blast_consolidated.csv"
+  fa24_transectB_1:
+    dataset_name: "FA24-transectB-1"
+    counts_file: "data/raw/FA24-transectB-1/scata6693/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/FA24-transectB-1/scata6693/all_clusters_scata6693.txt"
+    environnment_file: "data/raw/FA24-transectB-1/FA24-transectB-1-env.csv"
+    blast_results_file: "data/raw/FA24-transectB-1/blast_consolidated.csv"
+  fa24_transectB_2:
+    dataset_name: "FA24-transectB-2"
+    counts_file: "data/raw/FA24-transectB-2/scata6694/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/FA24-transectB-2/scata6694/all_clusters_scata6694.txt"
+    environnment_file: "data/raw/FA24-transectB-2/FA24-transectB-2-env.csv"
+    blast_results_file: "data/raw/FA24-transectB-2/blast_consolidated.csv"
+  fa24_transectB_3:
+    dataset_name: "FA24-transectB-3"
+    counts_file: "data/raw/FA24-transectB-3/scata6695/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/FA24-transectB-3/scata6695/all_clusters_scata6695.txt"
+    environnment_file: "data/raw/FA24-transectB-3/FA24-transectB-3-env.csv"
+    blast_results_file: "data/raw/FA24-transectB-3/blast_consolidated.csv"
+  fa24_transectB_4:
+    dataset_name: "FA24-transectB-4"
+    counts_file: "data/raw/FA24-transectB-4/scata6696/all_tag_by_cluster_counts.txt"
+    cluster_file: "data/raw/FA24-transectB-4/scata6696/all_clusters_scata6696.txt"
+    environnment_file: "data/raw/FA24-transectB-4/FA24-transectB-4-env.csv"
+    blast_results_file: "data/raw/FA24-transectB-4/blast_consolidated.csv"
+transects:
+  transectA: ["sp24_transectA-1", "sp24_transectA-2", "su24_transectA-1", "su24_transectA-2"]
+  transectB: ["fa24_transectB_1", "fa24_transectB_2", "fa24_transectB_3", "fa24_transectB_4"]
+  transectC: ["fa23_transectC", "sp24_transectC"]

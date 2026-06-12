@@ -2,7 +2,7 @@
 
 # Create a clean counts data frame for downstream analyses.
 # Usage:
-#   Rscript clean_scata_counts.R <transect> <config file> <output_file>
+#   Rscript clean_scata_counts.R <batch> <config file> <output_file>
 # Example:
 #   Rscript clean_scata_counts.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_counts.csv
 
@@ -288,7 +288,7 @@ clean_counts.cols_with_control <- function(counts, control, minimum_count = 3) {
 # -------------------------------
 # Process command-line arguments
 # -------------------------------
-usage <- "Usage: Rscript clean_scata_counts.R <transect> <config file> <output_file>"
+usage <- "Usage: Rscript clean_scata_counts.R <batch> <config file> <output_file>"
 
 # ------------------
 # The main function
@@ -296,31 +296,33 @@ usage <- "Usage: Rscript clean_scata_counts.R <transect> <config file> <output_f
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("transect", "config_file", "output_file"),
+    c("batch",
+      "config_file",
+      "cleaned_counts_file",
+      "cleaned_counts_qc_file"),
     usage
   )
-  transect_config <- load_transect_config(
+  batch_config <- load_batch_config(
     args$config_file,
-    args$transect,
-    c("dataset_name", "counts_file", "environnment_file", "cleaned_counts_qc_file")
+    args$batch,
+    c("dataset_name", "counts_file", "environnment_file")
   )
-  names(transect_config)[names(transect_config) == "environnment_file"] <- "environment_file"
+  names(batch_config)[names(batch_config) == "environnment_file"] <- "environment_file"
 
-  message("   Processing transect: ", args$transect)
-  message("     Scata counts file: ", transect_config$counts_file)
-  message("          Dataset name: ", transect_config$dataset_name)
-  message("      Environment file: ", transect_config$environment_file)
-  message("Cleaned counts QC file: ", transect_config$cleaned_counts_qc_file)
+  message(" Processing batch: ", args$batch)
+  message("Scata counts file: ", batch_config$counts_file)
+  message("     Dataset name: ", batch_config$dataset_name)
+  message(" Environment file: ", batch_config$environment_file)
 
   result <- clean_counts(
-    scata_counts_file = transect_config$counts_file,
-    env_file = transect_config$environment_file,
-    dataset_name = transect_config$dataset_name,
-    cleaned_counts_qc_file = transect_config$cleaned_counts_qc_file
+    scata_counts_file = batch_config$counts_file,
+    env_file = batch_config$environment_file,
+    dataset_name = batch_config$dataset_name,
+    cleaned_counts_qc_file = args$cleaned_counts_qc_file
   )
 
-  write.csv(result, file = args$output_file, row.names = FALSE, fileEncoding = "UTF-8")
-  message("Done. Output written to: ", args$output_file)
+  write.csv(result, file = args$cleaned_counts_file, row.names = FALSE, fileEncoding = "UTF-8")
+  message("Done. Output written to: ", args$out_cleaned_counts_file)
 }
 
 main()
