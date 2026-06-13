@@ -2,8 +2,8 @@ normalize_name <- function(name) {
   new_name <- name
 
   # No match found in UNITE. No BLASTn hits.
-  if(is.na(new_name)) {
-    return (paste0("No hits found"))
+  if (is.na(new_name)) {
+    return(paste0("No hits found"))
   }
 
   # ignores
@@ -25,12 +25,12 @@ normalize_name <- function(name) {
     return("fungus")
   }
   if (startsWith(new_name, "fungal ")) {
-    return ("fungus")
+    return("fungus")
   }
 
   # mock 1, mock 2, mock 3
   if (startsWith(new_name, "mock ")) {
-    return ("mock")
+    return("mock")
   }
 
   # TODO: foliar endophyte of Picea glauca?

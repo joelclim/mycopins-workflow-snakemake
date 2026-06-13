@@ -43,7 +43,7 @@ merge_communities <- function(merged.env, top_df, bot_df) {
     merged_df[[specie]] <- merged_values
   }
 
-  return(merged_df[, (ncol(merged.env)+1): ncol(merged_df)])
+  return(merged_df[, (ncol(merged.env) + 1):ncol(merged_df)])
 }
 
 reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
@@ -73,20 +73,28 @@ reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
         }
 
         latest_index <- next_index - 1
-        merged_env_df <- merge_environments(next_env_dfs[[latest_index]],
-                                            current_env_dfs[[index]])
-        merged_comm_df <- merge_communities(merged_env_df,
-                                            next_comm_dfs[[latest_index]],
-                                            current_comm_dfs[[index]])
+        merged_env_df <- merge_environments(
+          next_env_dfs[[latest_index]],
+          current_env_dfs[[index]]
+        )
+        merged_comm_df <- merge_communities(
+          merged_env_df,
+          next_comm_dfs[[latest_index]],
+          current_comm_dfs[[index]]
+        )
 
         next_env_dfs[[latest_index]] <- merged_env_df
         next_comm_dfs[[latest_index]] <- merged_comm_df
       } else {
-        merged_env_df <- merge_environments(current_env_dfs[[index]],
-                                            current_env_dfs[[index + 1]])
-        merged_comm_df <- merge_communities(merged_env_df,
-                                            current_comm_dfs[[index]],
-                                            current_comm_dfs[[index + 1]])
+        merged_env_df <- merge_environments(
+          current_env_dfs[[index]],
+          current_env_dfs[[index + 1]]
+        )
+        merged_comm_df <- merge_communities(
+          merged_env_df,
+          current_comm_dfs[[index]],
+          current_comm_dfs[[index + 1]]
+        )
 
         next_env_dfs[[next_index]] <- merged_env_df
         next_comm_dfs[[next_index]] <- merged_comm_df
@@ -172,8 +180,10 @@ main <- function() {
   write_csv(merged_env_df, args$environment_file)
   write_csv(merged_comm_df, args$community_file)
 
-  message("Done. Output written to: ", args$environment_file,
-          " and ", args$community_file)
+  message(
+    "Done. Output written to: ", args$environment_file,
+    " and ", args$community_file
+  )
 }
 
 main()

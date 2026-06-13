@@ -17,7 +17,6 @@ clean_counts <- function(scata_counts_file,
                          cleaned_counts_qc_file,
                          minimum_count = 3,
                          sep_col_name = "_Splitter_") {
-
   # Start from the subset of counts/env rows that refer to the same tags,
   # with rows explicitly aligned so downstream sample metadata stays matched.
   aligned_data <- clean_counts.load_aligned_data(
@@ -175,8 +174,10 @@ clean_counts.build_qc_lines <- function(qc_stats,
     paste0("[F] Number of clusters: ", qc_stats$cluster_counts),
     paste0("[G] Number of clusters with pos control: ", length(counts.cols_with_pos)),
     paste0("[H] Number of clusters with neg control: ", length(counts.cols_with_neg)),
-    paste0("[I] Number of clusters with total counts less than ",
-           minimum_count, ": ", length(small_clusters)),
+    paste0(
+      "[I] Number of clusters with total counts less than ",
+      minimum_count, ": ", length(small_clusters)
+    ),
     divider,
     "Tags in env not in counts.",
     clean_counts.format_qc_message(
@@ -240,24 +241,31 @@ clean_counts.valid_tags <- function(in_counts_file, dataset_name) {
   df_tags$TagNum2FR <- sub(pattern, "\\4", df_tags$Tag)
 
   # Sort by tag numbers
-  sorted_df_tags <- df_tags[order(df_tags$TagNum1,
-                                  df_tags$TagNum1FR,
-                                  df_tags$TagNum2,
-                                  df_tags$TagNum2FR), ]
+  sorted_df_tags <- df_tags[order(
+    df_tags$TagNum1,
+    df_tags$TagNum1FR,
+    df_tags$TagNum2,
+    df_tags$TagNum2FR
+  ), ]
 
   # Remove entries where the forward tag num does not match
   # with the reverse tag num.
   df_valid_tags <- sorted_df_tags[
-    sorted_df_tags$TagNum1 == sorted_df_tags$TagNum2, ]
+    sorted_df_tags$TagNum1 == sorted_df_tags$TagNum2,
+  ]
 
   # Remove columns we no longer need
   df_valid_tags <- df_valid_tags[, !(names(df_valid_tags) %in%
-                                       c("Tag", "TagNum2",
-                                         "TagNum1FR", "TagNum2FR"))]
+    c(
+      "Tag", "TagNum2",
+      "TagNum1FR", "TagNum2FR"
+    ))]
 
   # Move TagNum1 column as the first column.
-  df_valid_tags <- df_valid_tags[, c("TagNum1",
-                                     setdiff(names(df_valid_tags), "TagNum1"))]
+  df_valid_tags <- df_valid_tags[, c(
+    "TagNum1",
+    setdiff(names(df_valid_tags), "TagNum1")
+  )]
 
   # Rename TagNum1 as Tag
   names(df_valid_tags)[names(df_valid_tags) == "TagNum1"] <- "Tag"
@@ -276,11 +284,15 @@ clean_counts.get_small_clusters <- function(community_df, minimum_count = 3) {
 }
 
 clean_counts.cols_with_control <- function(counts, control, minimum_count = 3) {
-  control_rows <- counts[counts$Sample.Number == control,
-                            !(colnames(counts) %in% c("Tag", "Sample.Number"))]
+  control_rows <- counts[
+    counts$Sample.Number == control,
+    !(colnames(counts) %in% c("Tag", "Sample.Number"))
+  ]
   col_names <- colnames(control_rows)
-  col_names_with_control <- col_names[apply(control_rows, 2,
-                                            function(x) max(x) >= minimum_count)]
+  col_names_with_control <- col_names[apply(
+    control_rows, 2,
+    function(x) max(x) >= minimum_count
+  )]
 
   return(col_names_with_control)
 }
@@ -296,10 +308,12 @@ usage <- "Usage: Rscript clean_scata_counts.R <batch> <config file> <output_file
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("batch",
+    c(
+      "batch",
       "config_file",
       "cleaned_counts_file",
-      "cleaned_counts_qc_file"),
+      "cleaned_counts_qc_file"
+    ),
     usage
   )
   batch_config <- load_config(

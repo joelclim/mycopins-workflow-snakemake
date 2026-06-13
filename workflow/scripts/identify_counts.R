@@ -61,32 +61,44 @@ main <- function() {
   message("Complete clusters file: ", args$complete_clusters_file)
 
   cleaned_counts_df <- read_csv(args$cleaned_counts_file,
-                                show_col_types = FALSE,
-                                locale = locale(encoding = "UTF-8"))
+    show_col_types = FALSE,
+    locale = locale(encoding = "UTF-8")
+  )
 
   complete_clusters_df <- read_csv(args$complete_clusters_file,
-                                   show_col_types = FALSE,
-                                   locale = locale(encoding = "UTF-8"))
-  identified_counts_df <- identify_counts(cleaned_counts_df,
-                                          complete_clusters_df)
+    show_col_types = FALSE,
+    locale = locale(encoding = "UTF-8")
+  )
+  identified_counts_df <- identify_counts(
+    cleaned_counts_df,
+    complete_clusters_df
+  )
 
   sep_index <- which(names(identified_counts_df) == "_Splitter_")
-  environment_df <- identified_counts_df[, 1:(sep_index-1)]
-  write.csv(environment_df, file = args$out_mycopins_environment_file,
-            row.names = FALSE, fileEncoding = "UTF-8")
+  environment_df <- identified_counts_df[, 1:(sep_index - 1)]
+  write.csv(environment_df,
+    file = args$out_mycopins_environment_file,
+    row.names = FALSE, fileEncoding = "UTF-8"
+  )
 
-  community_df <- identified_counts_df[, (sep_index+1):ncol(identified_counts_df)]
-  write.csv(community_df, file = args$out_mycopins_community_file,
-            row.names = FALSE, fileEncoding = "UTF-8")
+  community_df <- identified_counts_df[, (sep_index + 1):ncol(identified_counts_df)]
+  write.csv(community_df,
+    file = args$out_mycopins_community_file,
+    row.names = FALSE, fileEncoding = "UTF-8"
+  )
 
   complete_counts_df <- identified_counts_df[, -which(names(identified_counts_df) == "_Splitter_")]
-  write.csv(complete_counts_df, file = args$out_complete_counts_file,
-            row.names = FALSE, fileEncoding = "UTF-8")
+  write.csv(complete_counts_df,
+    file = args$out_complete_counts_file,
+    row.names = FALSE, fileEncoding = "UTF-8"
+  )
 
-  message("Done. Outputs written to: ",
-          args$out_complete_counts_file, ", ",
-          args$out_mycopins_environment_file, ", ",
-          args$out_mycopins_community_file)
+  message(
+    "Done. Outputs written to: ",
+    args$out_complete_counts_file, ", ",
+    args$out_mycopins_environment_file, ", ",
+    args$out_mycopins_community_file
+  )
 }
 
 main()

@@ -26,12 +26,11 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
 
     # Check if the line is empty
     if (length(line) == 0) {
-      break  # Exit the loop if end of file is reached
+      break # Exit the loop if end of file is reached
     }
 
     # Check if the line contains strings delimited by semicolon
     if (grepl(";", line)) {
-
       if (startsWith(line, "Cluster ID;Cluster Size;")) {
         # Header found
         found_first_row <- TRUE
@@ -45,7 +44,7 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
 
           start_reference <- tokens[4]
           end_reference <- NULL
-          for(i in seq_along(tokens)) {
+          for (i in seq_along(tokens)) {
             token <- tokens[i]
             if (i > 4 & !is.na(suppressWarnings(as.numeric(token)))) {
               end_reference <- token
@@ -53,14 +52,14 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
             }
           }
           left_end_index <- gregexpr(start_reference, line)[[1]][1]
-          left_substring <- substring(line, 1, left_end_index-2)
+          left_substring <- substring(line, 1, left_end_index - 2)
           left_substring <- gsub(";", ",", left_substring)
 
           right_start_index <- gregexpr(end_reference, line)[[1]][1]
           right_substring <- substring(line, right_start_index, nchar(line))
           right_substring <- gsub(";", ",", right_substring)
 
-          reference <- substring(line, left_end_index, right_start_index-1)
+          reference <- substring(line, left_end_index, right_start_index - 1)
           reference <- gsub(",", "/", reference)
 
           record <- paste0(left_substring, ",", reference, ",", right_substring)
@@ -70,7 +69,7 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
         }
 
         # Write the line to the output file
-        cat(record, sep="\n", file = out_con)
+        cat(record, sep = "\n", file = out_con)
       }
     }
   }
@@ -81,8 +80,9 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
 
   suppressMessages(
     df <- read_csv(out_all_clusters_file,
-                   show_col_types = FALSE,
-                   locale = locale(encoding = "UTF-8"))
+      show_col_types = FALSE,
+      locale = locale(encoding = "UTF-8")
+    )
   )
   df <- select(df, -contains("..."))
 
@@ -123,8 +123,9 @@ main <- function() {
   )
 
   write.csv(result,
-            file = args$output_file,
-            row.names = FALSE, fileEncoding = "UTF-8")
+    file = args$output_file,
+    row.names = FALSE, fileEncoding = "UTF-8"
+  )
 
   message("Done. Output written to: ", args$output_file)
 }

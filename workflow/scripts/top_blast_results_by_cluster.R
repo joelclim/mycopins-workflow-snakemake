@@ -3,7 +3,8 @@ suppressPackageStartupMessages(library(dplyr))
 
 get_lowest_evalue <- function(cluster_result_df, sequence_num) {
   cluster_seq_df <- cluster_result_df[
-    cluster_result_df$sequence_num == sequence_num,]
+    cluster_result_df$sequence_num == sequence_num,
+  ]
 
   # no matches to evaluate
   if (nrow(cluster_seq_df) == 0) {
@@ -12,12 +13,13 @@ get_lowest_evalue <- function(cluster_result_df, sequence_num) {
 
   # keep the matches with the lowest evalue
   lowest_evalue <- min(cluster_seq_df$evalue)
-  candidates_df <- cluster_seq_df[cluster_seq_df$evalue == lowest_evalue,]
+  candidates_df <- cluster_seq_df[cluster_seq_df$evalue == lowest_evalue, ]
 
   # remove the matches with a sciname that start with uncultured or fungal
   pattern <- "^uncultured|^fungal"
   candidates_df <- candidates_df[
-    !grepl(pattern, tolower(candidates_df$sciname)), ]
+    !grepl(pattern, tolower(candidates_df$sciname)),
+  ]
 
   scinames <- candidates_df$sciname
 
@@ -30,7 +32,8 @@ get_lowest_evalue <- function(cluster_result_df, sequence_num) {
 
 get_highest_percent_identity <- function(cluster_result_df, sequence_num) {
   cluster_seq_df <- cluster_result_df[
-    cluster_result_df$sequence_num == sequence_num, ]
+    cluster_result_df$sequence_num == sequence_num,
+  ]
 
   # no matches to evaluate
   if (nrow(cluster_seq_df) == 0) {
@@ -40,7 +43,8 @@ get_highest_percent_identity <- function(cluster_result_df, sequence_num) {
   # keep the matches with the lowest evalue
   highest_percent_identity <- max(cluster_seq_df$percent_identity)
   candidates_df <- cluster_seq_df[
-    cluster_seq_df$percent_identity == highest_percent_identity,]
+    cluster_seq_df$percent_identity == highest_percent_identity,
+  ]
 
   # remove the matches with a sciname that start with uncultured or fungal
   pattern <- "^uncultured|^fungal"
@@ -82,14 +86,15 @@ get_best_from_all_matches <- function(cluster_result_df) {
   # remove the matches with a sciname that start with uncultured or fungal
   pattern <- "^uncultured|^fungal"
   candidates_df <- cluster_result_df[
-    !grepl(pattern, tolower(cluster_result_df$sciname)), ]
+    !grepl(pattern, tolower(cluster_result_df$sciname)),
+  ]
   # Still remaining matches?
   if (nrow(candidates_df) > 1) {
     # Top of the remaining match has the same e-value and percent identity as
     # the first record of the top match.
     top_classified <- candidates_df[1, ]
     if (top_match$evalue == top_classified$evalue &
-        top_match$percent_identity == top_classified$percent_identity) {
+      top_match$percent_identity == top_classified$percent_identity) {
       # Make the top classified the top match
       top_match <- top_classified
     }
@@ -137,8 +142,10 @@ top_blast_results_by_cluster <- function(consolidated_blast_df) {
   #   evalue coefficient desc, percent identity and hit num
   df <- consolidated_blast_df %>%
     group_by(cluster_id) %>%
-    arrange(cluster_num, evalue_exponent, evalue_coefficient,
-            desc(percent_identity), hit_num)
+    arrange(
+      cluster_num, evalue_exponent, evalue_coefficient,
+      desc(percent_identity), hit_num
+    )
 
   # Determine the cluster numbers and sort them in asc order
   cluster_nums <- sort(unique(df$cluster_num))
@@ -151,7 +158,7 @@ top_blast_results_by_cluster <- function(consolidated_blast_df) {
   for (i in seq_along(cluster_nums)) {
     cluster_num <- cluster_nums[i]
 
-    cluster_result_df <- df[df$cluster_num == cluster_num,]
+    cluster_result_df <- df[df$cluster_num == cluster_num, ]
 
     best_match <- get_best_match(cluster_result_df)
 

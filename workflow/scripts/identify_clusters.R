@@ -43,19 +43,22 @@ main <- function() {
   message("   Blast results file: ", batch_config$blast_results_file)
 
   blast_results_df <- read_csv(batch_config$blast_results_file,
-                               show_col_types = FALSE,
-                               locale = locale(encoding = "UTF-8"))
+    show_col_types = FALSE,
+    locale = locale(encoding = "UTF-8")
+  )
   top_match_df <- top_blast_results_by_cluster(blast_results_df)
 
   cleaned_clusters_df <- read_csv(args$cleaned_clusters_file,
-                                  show_col_types = FALSE,
-                                  locale = locale(encoding = "UTF-8"))
+    show_col_types = FALSE,
+    locale = locale(encoding = "UTF-8")
+  )
   result <- apply_top_match_to_clusters(top_match_df, cleaned_clusters_df)
 
   write.csv(result,
-            file = args$output_file,
-            row.names = FALSE,
-            fileEncoding = "UTF-8")
+    file = args$output_file,
+    row.names = FALSE,
+    fileEncoding = "UTF-8"
+  )
   message("Done. Output written to: ", args$output_file)
 }
 

@@ -4,15 +4,18 @@ apply_top_match_to_clusters <- function(top_match_df, cleaned_clusters_df) {
   # Merging data frames
   # Left-outer Join of the cleaned_clusters_df and top_match data frames.
   merge_df <- merge(cleaned_clusters_df, top_match_df,
-                    by = "cluster_id", all.x = TRUE)
+    by = "cluster_id", all.x = TRUE
+  )
 
   # Determine the organism representing the cluster
   reference_df <- data.frame(t(apply(merge_df, 1, function(row) {
     # Use the top_match's sciname if exists
     if (!is.na(row["sciname"])) {
-      return(c(row["sciname"],
-               row["accession"],
-               row["taxid"]))
+      return(c(
+        row["sciname"],
+        row["accession"],
+        row["taxid"]
+      ))
     }
 
     # If not, use the cleaned_clusters_df's Reference.
@@ -32,14 +35,16 @@ apply_top_match_to_clusters <- function(top_match_df, cleaned_clusters_df) {
   colnames(reference_df) <- c("sciname", "accession", "taxid")
   merge_df$Reference <- reference_df$sciname
   merge_df$normalized_name <- sapply(merge_df$Reference, normalize_name)
-  merge_df$gbif_accepted_name <- sapply(merge_df$normalized_name,
-                                       get_gbif_accepted_name)
+  merge_df$gbif_accepted_name <- sapply(
+    merge_df$normalized_name,
+    get_gbif_accepted_name
+  )
   merge_df$accession <- reference_df$accession
   merge_df$taxid <- reference_df$taxid
 
   # Determine the whether SCATA or BLAST classified the cluster
   sources <- apply(merge_df, 1, function(row) {
-    if (row["normalized_name"] == 'No hits found') {
+    if (row["normalized_name"] == "No hits found") {
       return("No hits found")
     }
 
@@ -77,12 +82,14 @@ apply_top_match_to_clusters <- function(top_match_df, cleaned_clusters_df) {
   # Drop all columns from top_match
   drop_column_names <- c(names(top_match_df), "X")
   drop_column_names <- drop_column_names[!drop_column_names %in%
-                                           c("cluster_id",
-                                             "evalue",
-                                             "bit_score",
-                                             "percent_identity",
-                                             "taxid",
-                                             "accession")]
+    c(
+      "cluster_id",
+      "evalue",
+      "bit_score",
+      "percent_identity",
+      "taxid",
+      "accession"
+    )]
   merge_df <- merge_df[, !names(merge_df) %in% drop_column_names]
 
   # EValue of  Reference identified by SCATA is 0. Not determined by chance.
@@ -90,12 +97,12 @@ apply_top_match_to_clusters <- function(top_match_df, cleaned_clusters_df) {
 
   # Bit-Score of Reference identified by SCATA is 999.
   bit_score <- apply(merge_df, 1, function(row) {
-    if (row["normalized_name"] == 'No hits found') {
+    if (row["normalized_name"] == "No hits found") {
       return(0)
     }
 
     # UNITE
-    if (row["source"] == 'UNITE') {
+    if (row["source"] == "UNITE") {
       return(999)
     }
 
@@ -106,12 +113,12 @@ apply_top_match_to_clusters <- function(top_match_df, cleaned_clusters_df) {
 
   # Percent Identity of Reference identified by SCATA is 100%
   percent_identity <- apply(merge_df, 1, function(row) {
-    if (row["normalized_name"] == 'No hits found') {
+    if (row["normalized_name"] == "No hits found") {
       return(0)
     }
 
     # UNITE
-    if (row["source"] == 'UNITE') {
+    if (row["source"] == "UNITE") {
       return(100)
     }
 
