@@ -51,6 +51,10 @@ reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
     stop("Expected the same number of environment and community data frames.", call. = FALSE)
   }
 
+  if (length(batch_env_dfs) == 0) {
+    stop("Expected at least one environment and community data frame.", call. = FALSE)
+  }
+
   current_env_dfs <- batch_env_dfs
   current_comm_dfs <- batch_comm_dfs
 
@@ -61,8 +65,22 @@ reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
 
     for (index in seq(1, length(current_env_dfs), by = 2)) {
       if (index == length(current_env_dfs)) {
-        next_env_dfs[[next_index]] <- current_env_dfs[[index]]
-        next_comm_dfs[[next_index]] <- current_comm_dfs[[index]]
+        if (next_index == 1) {
+          next_env_dfs[[next_index]] <- current_env_dfs[[index]]
+          next_comm_dfs[[next_index]] <- current_comm_dfs[[index]]
+          next_index <- next_index + 1
+          next
+        }
+
+        latest_index <- next_index - 1
+        merged_env_df <- merge_environments(next_env_dfs[[latest_index]],
+                                            current_env_dfs[[index]])
+        merged_comm_df <- merge_communities(merged_env_df,
+                                            next_comm_dfs[[latest_index]],
+                                            current_comm_dfs[[index]])
+
+        next_env_dfs[[latest_index]] <- merged_env_df
+        next_comm_dfs[[latest_index]] <- merged_comm_df
       } else {
         merged_env_df <- merge_environments(current_env_dfs[[index]],
                                             current_env_dfs[[index + 1]])
@@ -72,9 +90,8 @@ reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
 
         next_env_dfs[[next_index]] <- merged_env_df
         next_comm_dfs[[next_index]] <- merged_comm_df
+        next_index <- next_index + 1
       }
-
-      next_index <- next_index + 1
     }
 
     current_env_dfs <- next_env_dfs
