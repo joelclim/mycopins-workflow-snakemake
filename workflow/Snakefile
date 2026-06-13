@@ -22,7 +22,9 @@ rule all:
         expand("results/tables/{batch}_cleaned_clusters.csv", batch=BATCHES),
         expand("results/tables/{batch}_complete_clusters.csv", batch=BATCHES),
         expand("results/tables/mycopins_{transect}_environment.csv", transect=TRANSECTS),
-        expand("results/tables/mycopins_{transect}_community.csv", transect=TRANSECTS)
+        expand("results/tables/mycopins_{transect}_community.csv", transect=TRANSECTS),
+        "results/tables/oulanka_mycopins_environment.csv",
+        "results/tables/oulanka_mycopins_community.csv",
 
 
 include: "rules/clean.smk"
