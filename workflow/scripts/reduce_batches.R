@@ -2,9 +2,9 @@
 
 # Merge batches of the same transect into a single environment and community data frame.
 # Usage:
-#   Rscript merge_batches.R <batch_environment_file...> <batch_community_file...> <environment_file> <community_file>
+#   Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <environment_file> <community_file>
 # Example:
-#   Rscript merge_batches.R results/tables/batch1_environment.csv results/tables/batch2_environment.csv results/tables/batch1_community.csv results/tables/batch2_community.csv results/tables/fa23_transectC_environment.csv results/tables/fa23_transectC_community.csv
+#   Rscript reduce_batches.R results/tables/batch1_environment.csv results/tables/batch2_environment.csv results/tables/batch1_community.csv results/tables/batch2_community.csv results/tables/fa23_transectC_environment.csv results/tables/fa23_transectC_community.csv
 
 merge_environments <- function(first_df, second_df) {
   # Merge env
@@ -96,7 +96,7 @@ suppressPackageStartupMessages(library(readr))
 source("workflow/scripts/script_helpers.R")
 
 usage <- paste(
-  "Usage: Rscript merge_batches.R",
+  "Usage: Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <environment_file> <community_file>",
   "<batch_environment_file...> <batch_community_file...>",
   "<environment_file> <community_file>"
 )

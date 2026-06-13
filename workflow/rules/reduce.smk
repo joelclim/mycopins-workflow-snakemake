@@ -1,5 +1,5 @@
 # snakemake -np results/tables/mycopins_transectC_environment.csv results/tables/mycopins_transectC_community.csv
-rule merge_batches:
+rule reduce_batches:
     input:
         batch_environment_files = lambda wildcards: expand(
             "results/tables/{batch}_mycopins_environment.csv",
@@ -14,7 +14,7 @@ rule merge_batches:
         community_file = "results/tables/mycopins_{transect}_community.csv"
     shell:
         (
-            "Rscript workflow/scripts/merge_batches.R "
+            "Rscript workflow/scripts/reduce_batches.R "
             "{input.batch_environment_files} "
             "{input.batch_community_files} "
             "{output.environment_file} "

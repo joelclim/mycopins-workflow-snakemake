@@ -27,4 +27,4 @@ rule all:
 
 include: "rules/clean.smk"
 include: "rules/identify.smk"
-include: "rules/merge.smk"
+include: "rules/reduce.smk"
