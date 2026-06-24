@@ -70,3 +70,25 @@ transects:
   transectA: ["sp24_transectA-1", "sp24_transectA-2", "su24_transectA-1", "su24_transectA-2"]
   transectB: ["fa24_transectB_1", "fa24_transectB_2", "fa24_transectB_3", "fa24_transectB_4"]
   transectC: ["fa23_transectC", "sp24_transectC"]
+ipt_gbif:
+  oulanka:
+    location: "Oulanka"
+    # Event
+    sampling_protocol: "https://doi.org/10.3897/mycokeys.96.101033"
+    location_id: "https://www.geonames.org/12226273"
+    country_code: "FI"
+    country: "Finland"
+    state_province: "North Ostrobothnia"
+    municipality: "Kuusamo"
+    # Occurrence
+    basis_of_record: "MaterialSample"
+    organism_quantity_type: "DNA sequence reads"
+    # https://rs.gbif.org/extension/gbif/1.0/dna_derived_data_2024-04-17.xml#DNA_sequence
+    lib_layout: "paired"
+    target_gene: "ITS"
+    target_subfragment: "ITS2"
+    seq_method: "Illumina MiSeq"
+    otu_db: "Clustering based on the UNITE Fungi 9.0 (2023-07-18) (https://doi.org/10.15156/BIO/2938068) using USearch with 90% identity parameter (SCATA)"
+    pcr_primer_name_forward: "fITS7"
+    pcr_primer_name_reverse: "ITS4"
+    pcr_primer_reference: "https://doi.org/10.1007/978-1-4939-3369-3_4"

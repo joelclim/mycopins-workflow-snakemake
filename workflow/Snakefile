@@ -30,3 +30,4 @@ rule all:
 include: "rules/clean.smk"
 include: "rules/identify.smk"
 include: "rules/reduce.smk"
+include: "rules/gbif.smk"
