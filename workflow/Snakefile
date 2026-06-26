@@ -41,10 +41,10 @@ rule all:
         "results/tables/oulanka_mycopins_community.csv",
         "results/tables/oulanka_mycopins_organisms.csv",
         "results/tables/oulanka_mycopins_sample_clusters.csv",
-        "results/report/gbif/event.txt",
-        "results/report/gbif/occurrence.txt",
-        "results/report/gbif/dna-derived.txt",
-        "results/report/gbif/occurrence-core.txt"
+        "results/report/ipt_gbif/event.txt",
+        "results/report/ipt_gbif/occurrence.txt",
+        "results/report/ipt_gbif/dna-derived.txt",
+        "results/report/ipt_gbif/occurrence-core.txt"
 
 include: "rules/clean.smk"
 include: "rules/identify.smk"

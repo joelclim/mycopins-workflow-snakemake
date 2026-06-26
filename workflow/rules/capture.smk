@@ -3,6 +3,8 @@ rule capture_organisms:
         complete_clusters_file = "results/tables/{batch}_complete_clusters.csv"
     output:
         organisms_file = "results/tables/{batch}_organisms.csv"
+    log:
+        "results/logs/{batch}_capture_organisms.log"
     params:
         batch = "{batch}"
     shell:
@@ -11,6 +13,7 @@ rule capture_organisms:
             "{params.batch} "
             "{input.complete_clusters_file} "
             "{output.organisms_file} "
+            "2>&1 | tee {log}"
         )
 
 rule capture_sample_clusters:
@@ -19,6 +22,8 @@ rule capture_sample_clusters:
         complete_clusters_file = "results/tables/{batch}_complete_clusters.csv"
     output:
         sample_clusters_file = "results/tables/{batch}_sample_clusters.csv"
+    log:
+        "results/logs/{batch}_capture_sample_clusters.log"
     params:
         batch = "{batch}"
     shell:
@@ -28,4 +33,5 @@ rule capture_sample_clusters:
             "{input.cleaned_counts_file} "
             "{input.complete_clusters_file} "
             "{output.sample_clusters_file} "
+            "2>&1 | tee {log}"
         )

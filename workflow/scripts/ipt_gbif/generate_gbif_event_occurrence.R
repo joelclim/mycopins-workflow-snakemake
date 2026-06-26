@@ -4,14 +4,14 @@
 # Usage:
 #   Rscript generate_gbif_event_occurrence.R <location> <config file> <environment file> <community file> <organisms file> <sample cluster file> <output_file>
 # Example:
-#   Rscript workflow/scripts/ipt-gbif/generate_gbif_event_occurrence.R
+#   Rscript workflow/scripts/ipt_gbif/generate_gbif_event_occurrence.R
 #           oulanka
 #           config/config.yaml
 #           results/tables/oulanka_mycopins_environment.csv
 #           results/tables/oulanka_mycopins_community.csv
 #           results/tables/oulanka_mycopins_organisms.csv
 #           results/tables/oulanka_mycopins_sample_cluster.csv
-#           results/reports/gbif/occurrence.txt
+#           results/report/ipt_gbif/occurrence.txt
 
 source("workflow/scripts/script_helpers.R")
 
@@ -19,7 +19,7 @@ source("workflow/scripts/script_helpers.R")
 # Requires get_transects(), get_habitat(transect), get_latitude(transect), get_longitude(transect)
 #          get_wood_type(site_letter), get_wood_texture(site_letter), get_match_source(source)
 #
-source("workflow/scripts/ipt-gbif/oulanka_helpers.R")
+source("workflow/scripts/ipt_gbif/oulanka_helpers.R")
 
 create_gbif_occurrence_dynamic_properties <- function(site_letter, sample_cluster, organism) {
   dynamic_properties_df <- data.frame(woodType = get_wood_type(site_letter),

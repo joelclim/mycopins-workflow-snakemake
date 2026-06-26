@@ -4,11 +4,11 @@
 # Usage:
 #   Rscript generate_gbif_dna_derived.R <config file> <community file> <sample cluster file> <output_file>
 # Example:
-#   Rscript workflow/scripts/ipt-gbif/generate_gbif_dna_derived.R
+#   Rscript workflow/scripts/ipt_gbif/generate_gbif_dna_derived.R
 #           config/config.yaml
 #           results/tables/oulanka_mycopins_community.csv
 #           results/tables/oulanka_mycopins_sample_cluster.csv
-#           results/reports/gbif/dna_derived.txt
+#           results/report/ipt_gbif/dna_derived.txt
 
 source("workflow/scripts/script_helpers.R")
 

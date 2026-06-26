@@ -4,18 +4,18 @@
 # Usage:
 #   Rscript generate_gbif_event_core.R <location> <config file> <environment file> <output_file>
 # Example:
-#   Rscript workflow/scripts/ipt-gbif/generate_gbif_event_core.R
+#   Rscript workflow/scripts/ipt_gbif/generate_gbif_event_core.R
 #           oulanka
 #           config/config.yaml
 #           results/tables/oulanka_mycopins_environment.csv
-#           results/reports/gbif/event.txt
+#           results/report/ipt_gbif/event.txt
 
 source("workflow/scripts/script_helpers.R")
 
 #
 # Requires get_transects(), get_habitat(transect), get_latitude(transect), get_longitude(transect)
 #
-source("workflow/scripts/ipt-gbif/oulanka_helpers.R")
+source("workflow/scripts/ipt_gbif/oulanka_helpers.R")
 
 create_gbif_event_dynamic_properties <- function(site_letter, env_record) {
   dynamic_properties_df <- data.frame(

@@ -4,6 +4,8 @@ rule clean_scata_counts:
     output:
         cleaned_counts_file = "results/tables/{batch}_cleaned_counts.csv",
         cleaned_counts_qc_file = "results/report/{batch}_cleaned_counts_qc.txt"
+    log:
+        "results/logs/{batch}_clean_scata_counts.log"
     params:
         batch = "{batch}"
     shell:
@@ -12,7 +14,8 @@ rule clean_scata_counts:
             "{params.batch} "
             "{input} "
             "{output.cleaned_counts_file} "
-            "{output.cleaned_counts_qc_file}"
+            "{output.cleaned_counts_qc_file} "
+            "2>&1 | tee {log}"
         )
 
 rule clean_scata_clusters:
@@ -20,6 +23,8 @@ rule clean_scata_clusters:
         "config/config.yaml"
     output:
         cleaned_clusters_file = "results/tables/{batch}_cleaned_clusters.csv"
+    log:
+        "results/logs/{batch}_clean_scata_clusters.log"
     params:
         batch = "{batch}"
     shell:
@@ -27,5 +32,6 @@ rule clean_scata_clusters:
             "Rscript workflow/scripts/clean_scata_clusters.R "
             "{params.batch} "
             "{input} "
-            "{output.cleaned_clusters_file}"
+            "{output.cleaned_clusters_file} "
+            "2>&1 | tee {log}"
         )

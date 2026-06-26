@@ -22,6 +22,8 @@ rule reduce_batches:
         community_file = "results/tables/mycopins_{transect}_community.csv",
         organisms_file = "results/tables/mycopins_{transect}_organisms.csv",
         sample_clusters_file = "results/tables/mycopins_{transect}_sample_clusters.csv"
+    log:
+        "results/logs/{transect}_reduce_batches.log"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "
@@ -32,7 +34,8 @@ rule reduce_batches:
             "{output.environment_file} "
             "{output.community_file} "
             "{output.organisms_file} "
-            "{output.sample_clusters_file}"
+            "{output.sample_clusters_file} "
+            "2>&1 | tee {log}"
         )
 
 rule reduce_transects:
@@ -58,6 +61,8 @@ rule reduce_transects:
         community_file = "results/tables/oulanka_mycopins_community.csv",
         organisms_file = "results/tables/oulanka_mycopins_organisms.csv",
         sample_clusters_file = "results/tables/oulanka_mycopins_sample_clusters.csv"
+    log:
+        "results/logs/oulanka_reduce_transects.log"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "
@@ -68,5 +73,6 @@ rule reduce_transects:
             "{output.environment_file} "
             "{output.community_file} "
             "{output.organisms_file} "
-            "{output.sample_clusters_file}"
+            "{output.sample_clusters_file} "
+            "2>&1 | tee {log}"
         )

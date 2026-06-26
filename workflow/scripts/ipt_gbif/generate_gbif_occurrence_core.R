@@ -4,10 +4,10 @@
 # Usage:
 #   Rscript generate_gbif_occurrence_core.R <event core file> <event occurrence file> <output_file>
 # Example:
-#   Rscript workflow/scripts/ipt-gbif/generate_gbif_occurrence_core.R
-#           results/reports/gbif/event.txt
-#           results/reports/gbif/event_occurrence.txt
-#           results/reports/gbif/occurrence_core.txt
+#   Rscript workflow/scripts/ipt_gbif/generate_gbif_occurrence_core.R
+#           results/report/ipt_gbif/event.txt
+#           results/report/ipt_gbif/event_occurrence.txt
+#           results/report/ipt_gbif/occurrence_core.txt
 
 source("workflow/scripts/script_helpers.R")
 
