@@ -3,8 +3,18 @@
 
 configfile: "config/config.yaml"
 
+LOCATION = config["location"]
 BATCHES = list(config["batches"].keys())
 TRANSECTS = list(config["transects"].keys())
+import re
+
+BATCH_PATTERN = "|".join(re.escape(batch) for batch in BATCHES)
+TRANSECT_PATTERN = "|".join(re.escape(transect) for transect in TRANSECTS)
+
+wildcard_constraints:
+    batch=BATCH_PATTERN,
+    transect=TRANSECT_PATTERN
+
 def TRANSECT_BATCHES(wildcards):
     return config["transects"][wildcards.transect]
 
@@ -21,13 +31,23 @@ rule all:
         expand("results/tables/{batch}_cleaned_counts.csv", batch=BATCHES),
         expand("results/tables/{batch}_cleaned_clusters.csv", batch=BATCHES),
         expand("results/tables/{batch}_complete_clusters.csv", batch=BATCHES),
+        expand("results/tables/{batch}_organisms.csv", batch=BATCHES),
+        expand("results/tables/{batch}_sample_clusters.csv", batch=BATCHES),
         expand("results/tables/mycopins_{transect}_environment.csv", transect=TRANSECTS),
         expand("results/tables/mycopins_{transect}_community.csv", transect=TRANSECTS),
+        expand("results/tables/mycopins_{transect}_organisms.csv", transect=TRANSECTS),
+        expand("results/tables/mycopins_{transect}_sample_clusters.csv", transect=TRANSECTS),
         "results/tables/oulanka_mycopins_environment.csv",
         "results/tables/oulanka_mycopins_community.csv",
-
+        "results/tables/oulanka_mycopins_organisms.csv",
+        "results/tables/oulanka_mycopins_sample_clusters.csv",
+        "results/report/gbif/event.txt",
+        "results/report/gbif/occurrence.txt",
+        "results/report/gbif/dna-derived.txt",
+        "results/report/gbif/occurrence-core.txt"
 
 include: "rules/clean.smk"
 include: "rules/identify.smk"
+include: "rules/capture.smk"
 include: "rules/reduce.smk"
 include: "rules/gbif.smk"

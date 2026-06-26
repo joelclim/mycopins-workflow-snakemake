@@ -1,0 +1,68 @@
+taxon,primary_lifestyle,secondary_lifestyle,Saproxlyic - Nina verified,plant_pathogen,saproxylic,litter_saprotroph
+Acrocalymma medicaginis,wood_saprotroph,NA,Plant pathogen,yes,no,no
+Aotearoamyces nothofagi,wood_saprotroph,NA,Saproxylic,no,yes,no
+Arachnopeziza,wood_saprotroph,NA,Saproxylic,no,yes,no
+Arachnopeziza sphagniseda,wood_saprotroph,NA,Saproxylic,no,yes,no
+Ascocoryne cylichnium,wood_saprotroph,NA,Saproxylic,no,yes,no
+Ascocoryne sarcoides,wood_saprotroph,NA,Saproxylic,no,yes,no
+Atheliachaete sanguinea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Botryobasidium subcoronatum,wood_saprotroph,NA,Saproxylic,no,yes,no
+Ceraceomyces tessulatus,wood_saprotroph,NA,Saproxylic,no,yes,no
+Cistella acuum,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no
+Claussenomyces,wood_saprotroph,NA,Saproxylic,no,yes,no
+Collophora,plant_pathogen,wood_saprotroph,Pathogen|saproxylic,yes,yes,no
+Coniophora hanoiensis,wood_saprotroph,NA,Saproxylic,no,yes,no
+Coniophora olivacea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Corticium boreoroseum,wood_saprotroph,NA,Saproxylic,no,yes,no
+Curvibasidium,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no
+Curvibasidium nothofagi,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no
+Entoleuca mammata,plant_pathogen,wood_saprotroph,Saproxylic,no,yes,no
+Exidia,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no
+Graphilbum,wood_saprotroph,arthropod-associated,Pathogen|saproxylic,yes,yes,no
+Hyaloscypha,litter_saprotroph,wood_saprotroph,Saproxylic,no,yes,no
+Hyaloscypha finlandica,litter_saprotroph,wood_saprotroph,Saproxylic,no,yes,no
+Hyaloscypha hepaticicola,litter_saprotroph,wood_saprotroph,Saproxylic,no,yes,no
+Hyaloscypha variabilis,litter_saprotroph,wood_saprotroph,Saproxylic,no,yes,no
+Hydropus pseudotenax,litter_saprotroph,wood_saprotroph,Litter saprotroph,no,no,yes
+Hymenochaete cana,wood_saprotroph,plant_pathogen,Saproxylic,no,yes,no
+Hyphodontia,wood_saprotroph,NA,Saproxylic,no,yes,no
+Hyphodontia pallidula,wood_saprotroph,NA,Saproxylic,no,yes,no
+Lachnellula fuscosanguinea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Lachnum,litter_saprotroph,wood_saprotroph,Litter saprotroph,no,no,yes
+Lachnum virgineum,litter_saprotroph,wood_saprotroph,Litter saprotroph,no,no,yes
+Lentinula edodes,wood_saprotroph,NA,Saproxylic,no,yes,no
+Lenzites betulinus,wood_saprotroph,NA,Saproxylic,no,yes,no
+Leptosphaerulina trifolii,wood_saprotroph,NA,Plant pathogen,yes,no,no
+Metulodontia nivea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Neoantrodia angusta,wood_saprotroph,NA,Saproxylic,no,yes,no
+Neoantrodia serialis,wood_saprotroph,NA,Saproxylic,no,yes,no
+Oliveonia,wood_saprotroph,NA,Saproxylic,no,yes,no
+Orbilia mammillata,wood_saprotroph,animal_parasite,Saproxylic,no,yes,no
+Panellus stipticus,wood_saprotroph,NA,Saproxylic,no,yes,no
+Patinella abietina,wood_saprotroph,NA,Saproxylic,no,yes,no
+Phanerochaete pseudosanguinea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Phellinus lundellii,plant_pathogen,wood_saprotroph,Saproxylic,no,yes,no
+Phellinus pomaceoides,plant_pathogen,wood_saprotroph,Saproxylic,no,yes,no
+Phellinus tremulae,plant_pathogen,wood_saprotroph,Saproxylic,no,yes,no
+Pholiota scamba,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no
+Pleurotus eryngii,wood_saprotroph,nematophagous,Saproxylic,no,yes,no
+Pleurotus ostreatus,wood_saprotroph,nematophagous,Saproxylic,no,yes,no
+Pragmopora,wood_saprotroph,NA,Saproxylic,no,yes,no
+Pragmopora piceae,wood_saprotroph,NA,Saproxylic,no,yes,no
+Psathyrella flexuosipes,wood_saprotroph,litter_saprotroph,Litter saprotroph,no,no,yes
+Scutellinia,wood_saprotroph,soil_saprotroph,Saproxylic,no,yes,no
+Serpula himantioides,wood_saprotroph,NA,Saproxylic,no,yes,no
+Sistotremastrum suecicum,wood_saprotroph,NA,Saproxylic,no,yes,no
+Skvortzovia furfuracea,wood_saprotroph,NA,Saproxylic,no,yes,no
+Stereum,wood_saprotroph,NA,Saproxylic,no,yes,no
+Sydowia polyspora,wood_saprotroph,plant_pathogen,Plant pathogen,yes,no,no
+Synnemapestaloides,plant_pathogen,wood_saprotroph,Plant pathogen,yes,no,no
+Teichospora,litter_saprotroph,wood_saprotroph,Saproxylic,no,yes,no
+Trametes,wood_saprotroph,NA,Saproxylic,no,yes,no
+Trametes versicolor,wood_saprotroph,NA,Saproxylic,no,yes,no
+Trechispora,wood_saprotroph,NA,Saproxylic,no,yes,no
+Trechispora stellulata,wood_saprotroph,NA,Saproxylic,no,yes,no
+Tympanis tsugae,plant_pathogen,wood_saprotroph,Saproxylic,no,yes,no
+Xenasmatella,wood_saprotroph,NA,Saproxylic,no,yes,no
+Xenasmatella vaga,wood_saprotroph,NA,Saproxylic,no,yes,no
+Xylaria cubensis,wood_saprotroph,litter_saprotroph,Saproxylic,no,yes,no

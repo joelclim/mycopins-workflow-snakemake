@@ -89,13 +89,14 @@ clean_clusters <- function(in_all_clusters_file, out_all_clusters_file) {
   return(df)
 }
 
-# -------------------------------
-# Process command-line arguments
-# -------------------------------
+# --------
+# Imports
+# --------
 suppressPackageStartupMessages(if (!require("dplyr")) install.packages("dplyr"))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
+
 usage <- "Usage: Rscript clean_scata_clusters.R <batch> <config file> <output_file>"
 
 # ------------------

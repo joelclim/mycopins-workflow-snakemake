@@ -221,7 +221,7 @@ generate_gbif_event_occurrence <- function(
             #   next
             # }
 
-            print(paste0("Transect(", i, "/", transect_count,
+            message(paste0("Transect(", i, "/", transect_count,
                         "); Date.Collected(", j, "/", collection_date_count,
                         "); Sample(", k, "/", sample_count,
                         "); Species(", m, "/", species_count, ")"))
@@ -267,7 +267,7 @@ generate_gbif_event_occurrence <- function(
     }
   })
 
-  print(execution_time)
+  message(execution_time)
 
   return(gbif_occurrences)
 }
@@ -319,20 +319,20 @@ main <- function() {
   message("   Sample cluster file: ", args$sample_cluster_file)
   message("           Output file: ", args$output_file)
 
-  # result <- generate_gbif_event_occurrence(
-  #   location = config$location,
-  #   basis_of_record = config$basis_of_record,
-  #   organism_quantity_type = config$organism_quantity_type,
-  #   environment_file = args$environment_file,
-  #   community_file = args$community_file,
-  #   organisms_file = args$organisms_file,
-  #   sample_cluster_file = args$sample_cluster_file
-  # )
+  result <- generate_gbif_event_occurrence(
+    location = config$location,
+    basis_of_record = config$basis_of_record,
+    organism_quantity_type = config$organism_quantity_type,
+    environment_file = args$environment_file,
+    community_file = args$community_file,
+    organisms_file = args$organisms_file,
+    sample_cluster_file = args$sample_cluster_file
+  )
 
-  # write.csv(result,
-  #   file = args$output_file,
-  #   row.names = FALSE, fileEncoding = "UTF-8"
-  # )
+  write.csv(result,
+    file = args$output_file,
+    row.names = FALSE, fileEncoding = "UTF-8"
+  )
 
   message("Done. Output written to: ", args$output_file)
 }

@@ -12,7 +12,7 @@
 
 source("workflow/scripts/script_helpers.R")
 
-generate_dna_derived <- function(
+generate_gbif_dna_derived <- function(
   lib_layout,
   target_gene,
   target_subfragment,
@@ -96,12 +96,14 @@ generate_dna_derived <- function(
 # --------
 # Imports
 # --------
+suppressPackageStartupMessages(if (!require("dplyr")) install.packages("dplyr"))
+suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(if (!require("tidyr")) install.packages("tidyr"))
 suppressPackageStartupMessages(library(tidyr))
 
-usage <- "Usage: Rscript generate_gbif_dna_derived.R <config file> <community file> <sample cluster file> <output_file>"
+usage <- "Usage: Rscript generate_gbif_dna_derived.R <location> <config file> <community file> <sample cluster file> <output_file>"
 
 # ------------------
 # The main function
@@ -109,7 +111,7 @@ usage <- "Usage: Rscript generate_gbif_dna_derived.R <config file> <community fi
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("config_file", "community_file", "sample_cluster_file", "output_file"),
+    c("location", "config_file", "community_file", "sample_cluster_file", "output_file"),
     usage
   )
   config <- load_config(

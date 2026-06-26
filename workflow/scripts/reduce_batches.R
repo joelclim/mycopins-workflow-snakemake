@@ -2,9 +2,9 @@
 
 # Merge batches of the same transect into a single environment and community data frame.
 # Usage:
-#   Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <environment_file> <community_file>
+#   Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <batch_organisms_file...> <batch_sample_clusters_file...> <environment_file> <community_file> <organisms_file> <sample_clusters_file>
 # Example:
-#   Rscript reduce_batches.R results/tables/batch1_environment.csv results/tables/batch2_environment.csv results/tables/batch1_community.csv results/tables/batch2_community.csv results/tables/fa23_transectC_environment.csv results/tables/fa23_transectC_community.csv
+#   Rscript workflow/scripts/reduce_batches.R results/tables/sp24_transectA-1_mycopins_environment.csv results/tables/sp24_transectA-2_mycopins_environment.csv results/tables/su24_transectA-1_mycopins_environment.csv results/tables/su24_transectA-2_mycopins_environment.csv results/tables/sp24_transectA-1_mycopins_community.csv results/tables/sp24_transectA-2_mycopins_community.csv results/tables/su24_transectA-1_mycopins_community.csv results/tables/su24_transectA-2_mycopins_community.csv results/tables/sp24_transectA-1_mycopins_organisms.csv results/tables/sp24_transectA-2_mycopins_organisms.csv results/tables/su24_transectA-1_mycopins_organisms.csv results/tables/su24_transectA-2_mycopins_organisms.csv results/tables/sp24_transectA-1_mycopins_sample_clusters.csv results/tables/sp24_transectA-2_mycopins_sample_clusters.csv results/tables/su24_transectA-1_mycopins_sample_clusters.csv results/tables/su24_transectA-2_mycopins_sample_clusters.csv results/tables/mycopins_transectA_environment.csv results/tables/mycopins_transectA_community.csv results/tables/mycopins_transectA_organisms.csv results/tables/mycopins_transectA_sample_clusters.csv
 
 merge_environments <- function(first_df, second_df) {
   # Merge env
@@ -47,14 +47,6 @@ merge_communities <- function(merged.env, top_df, bot_df) {
 }
 
 reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
-  if (length(batch_env_dfs) != length(batch_comm_dfs)) {
-    stop("Expected the same number of environment and community data frames.", call. = FALSE)
-  }
-
-  if (length(batch_env_dfs) == 0) {
-    stop("Expected at least one environment and community data frame.", call. = FALSE)
-  }
-
   current_env_dfs <- batch_env_dfs
   current_comm_dfs <- batch_comm_dfs
 
@@ -112,39 +104,144 @@ reduce_batches <- function(batch_env_dfs, batch_comm_dfs) {
   )
 }
 
+merge_organisms <- function(first.organisms, second.organisms, fungi_only = FALSE) {
+  merged.organisms <- rbind(first.organisms, second.organisms)
+  merged.organisms <- cbind(rowId = rownames(merged.organisms), merged.organisms)
+
+  organisms <- unique(merged.organisms$organism)
+  if (fungi_only) {
+    organisms <- unique(subset(merged.organisms, gbif.taxon_rank != "KINGDOM")$organism)
+    organisms <- setdiff(organisms, c("alga",
+                                      "fungi", "fungus",
+                                      "Fungi", "Fungus",
+                                      "mock", "uncultured organism"))
+  }
+
+  rows_to_keep <- c()
+  for (organism_name in organisms) {
+    search_matches <- merged.organisms %>%
+      filter(organism == organism_name & match.bit_score >= 200) %>%
+      arrange(desc(match.percent_identity), match.evalue)
+
+    best_search_match <- NULL
+    if (nrow(search_matches) > 0) {
+      rows_to_keep <- c(rows_to_keep, search_matches[1,]$rowId)
+    }
+  }
+
+  # Keep only best search match rows for each organism
+  merged.organisms <- subset(merged.organisms, rowId %in% rows_to_keep)
+  # Remove rowId column
+  merged.organisms <- subset(merged.organisms, select = -rowId)
+  # Sort based on organism
+  merged.organisms <- merged.organisms[order(merged.organisms$organism), ]
+
+  return(merged.organisms)
+}
+
+reduce_organisms <- function(batch_organisms_dfs, fungi_only = FALSE) {
+  while (length(batch_organisms_dfs) > 1) {
+    next_organisms_dfs <- list()
+    next_index <- 1
+
+    for (index in seq(1, length(batch_organisms_dfs), by = 2)) {
+      if (index == length(batch_organisms_dfs)) {
+        next_organisms_dfs[[next_index]] <- batch_organisms_dfs[[index]]
+        next_index <- next_index + 1
+        next
+      }
+
+      merged_organisms_df <- merge_organisms(
+        batch_organisms_dfs[[index]],
+        batch_organisms_dfs[[index + 1]],
+        fungi_only = fungi_only
+      )
+
+      next_organisms_dfs[[next_index]] <- merged_organisms_df
+      next_index <- next_index + 1
+    }
+
+    batch_organisms_dfs <- next_organisms_dfs
+  }
+
+  return(batch_organisms_dfs[[1]])
+}
+
+merge_sample_clusters <- function(first.sample_clusters, second.sample_clusters) {
+  merged.sample_clusters <- rbind(first.sample_clusters, second.sample_clusters)
+
+  merged.sample_clusters$Sequence2[is.na(merged.sample_clusters$Sequence2)] <- ""
+  merged.sample_clusters$Sequence3[is.na(merged.sample_clusters$Sequence3)] <- ""
+
+  return(merged.sample_clusters)
+}
+
+reduce_sample_clusters <- function(batch_sample_clusters_dfs) {
+  while (length(batch_sample_clusters_dfs) > 1) {
+    next_sample_clusters_dfs <- list()
+    next_index <- 1
+
+    for (index in seq(1, length(batch_sample_clusters_dfs), by = 2)) {
+      if (index == length(batch_sample_clusters_dfs)) {
+        next_sample_clusters_dfs[[next_index]] <- batch_sample_clusters_dfs[[index]]
+        next_index <- next_index + 1
+        next
+      }
+
+      merged_sample_clusters_df <- merge_sample_clusters(
+        batch_sample_clusters_dfs[[index]],
+        batch_sample_clusters_dfs[[index + 1]]
+      )
+
+      next_sample_clusters_dfs[[next_index]] <- merged_sample_clusters_df
+      next_index <- next_index + 1
+    }
+
+    batch_sample_clusters_dfs <- next_sample_clusters_dfs
+  }
+
+  return(batch_sample_clusters_dfs[[1]])
+}
 
 # -------------------------------
 # Process command-line arguments
 # -------------------------------
+suppressPackageStartupMessages(if (!require("dplyr")) install.packages("dplyr"))
+suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
 source("workflow/scripts/script_helpers.R")
 
 usage <- paste(
-  "Usage: Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <environment_file> <community_file>",
-  "<batch_environment_file...> <batch_community_file...>",
-  "<environment_file> <community_file>"
+  "Usage: Rscript reduce_batches.R ",
+  "<batch_environment_file...> <batch_community_file...> ",
+  "<batch_organism_file...> <batch_sample_clusters_file...> ",
+  "<environment_file> <community_file> <organism_file> <sample_clusters_file>"
 )
 
 get_args <- function(raw_args) {
-  output_files <- raw_args[(length(raw_args) - 1):length(raw_args)]
-  batch_args <- raw_args[1:(length(raw_args) - 2)]
+  output_files <- raw_args[(length(raw_args) - 3):length(raw_args)]
+  batch_args <- raw_args[1:(length(raw_args) - 4)]
 
-  if (length(batch_args) == 0 || length(batch_args) %% 2 != 0) {
+  if (length(batch_args) == 0 || length(batch_args) %% 4 != 0) {
     abort_script(
       paste0(
         usage,
-        "\nExpected an even number of batch file arguments before the two output files."
+        "\nExpected a multiple of four batch file arguments before the four output files."
       )
     )
   }
 
-  midpoint <- length(batch_args) / 2
+  split_point <- length(batch_args) / 4
   list(
-    batch_environment_files = batch_args[seq_len(midpoint)],
-    batch_community_files = batch_args[(midpoint + 1):length(batch_args)],
+    batch_environment_files = batch_args[seq_len(split_point)],
+    batch_community_files = batch_args[(split_point + 1):(split_point * 2)],
+    batch_organisms_files = batch_args[(split_point * 2 + 1):(split_point * 3)],
+    batch_sample_clusters_files = batch_args[(split_point * 3 + 1):length(batch_args)],
     environment_file = output_files[1],
-    community_file = output_files[2]
+    community_file = output_files[2],
+    organism_file = output_files[3],
+    sample_clusters_file = output_files[4]
   )
 }
 
@@ -153,17 +250,23 @@ get_args <- function(raw_args) {
 # ------------------
 main <- function() {
   raw_args <- commandArgs(trailingOnly = TRUE)
-  if (length(raw_args) < 4) {
+  if (length(raw_args) < 8) {
     abort_script(usage)
   }
   args <- get_args(raw_args)
 
   batch_env_files <- args$batch_environment_files
   batch_comm_files <- args$batch_community_files
-  message("Batch environment files: ", paste(batch_env_files, collapse = ", "))
-  message("  Batch community files: ", paste(batch_comm_files, collapse = ", "))
-  message("       Environment file: ", args$environment_file)
-  message("         Community file: ", args$community_file)
+  batch_organisms_files <- args$batch_organisms_files
+  batch_sample_clusters_files <- args$batch_sample_clusters_files
+  message("    Batch environment files: ", paste(batch_env_files, collapse = ", "))
+  message("      Batch community files: ", paste(batch_comm_files, collapse = ", "))
+  message("      Batch organisms files: ", paste(batch_organisms_files, collapse = ", "))
+  message("Batch sample clusters files: ", paste(batch_sample_clusters_files, collapse = ", "))
+  message("           Environment file: ", args$environment_file)
+  message("             Community file: ", args$community_file)
+  message("             Organisms file: ", args$organism_file)
+  message("       Sample clusters file: ", args$sample_clusters_file)
 
   batch_env_dfs <- lapply(batch_env_files, function(file) {
     read_csv(file, show_col_types = FALSE, locale = locale(encoding = "UTF-8"))
@@ -173,16 +276,30 @@ main <- function() {
     read_csv(file, show_col_types = FALSE, locale = locale(encoding = "UTF-8"))
   })
 
+  batch_organisms_dfs <- lapply(batch_organisms_files, function(file) {
+    read_csv(file, show_col_types = FALSE, locale = locale(encoding = "UTF-8"))
+  })
+
+  batch_sample_clusters_dfs <- lapply(batch_sample_clusters_files, function(file) {
+    read_csv(file, show_col_types = FALSE, locale = locale(encoding = "UTF-8"))
+  })
+
   merged_batches <- reduce_batches(batch_env_dfs, batch_comm_dfs)
   merged_env_df <- merged_batches$environment_df
   merged_comm_df <- merged_batches$community_df
 
+  merged_organisms_df <- reduce_organisms(batch_organisms_dfs)
+  merged_sample_clusters_df <- reduce_sample_clusters(batch_sample_clusters_dfs)
+
   write_csv(merged_env_df, args$environment_file)
   write_csv(merged_comm_df, args$community_file)
+  write_csv(merged_organisms_df, args$organism_file)
+  write_csv(merged_sample_clusters_df, args$sample_clusters_file)
 
   message(
-    "Done. Output written to: ", args$environment_file,
-    " and ", args$community_file
+    "Done. Output written to: ", args$environment_file, ", ",
+    args$community_file, ", ", args$organism_file, ", ",
+    args$sample_clusters_file
   )
 }
 

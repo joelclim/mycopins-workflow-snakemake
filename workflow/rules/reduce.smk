@@ -8,17 +8,31 @@ rule reduce_batches:
         batch_community_files = lambda wildcards: expand(
             "results/tables/{batch}_mycopins_community.csv",
             batch=TRANSECT_BATCHES(wildcards)
+        ),
+        batch_organisms_files = lambda wildcards: expand(
+            "results/tables/{batch}_organisms.csv",
+            batch=TRANSECT_BATCHES(wildcards)
+        ),
+        batch_sample_clusters_files = lambda wildcards: expand(
+            "results/tables/{batch}_sample_clusters.csv",
+            batch=TRANSECT_BATCHES(wildcards)
         )
     output:
         environment_file = "results/tables/mycopins_{transect}_environment.csv",
-        community_file = "results/tables/mycopins_{transect}_community.csv"
+        community_file = "results/tables/mycopins_{transect}_community.csv",
+        organisms_file = "results/tables/mycopins_{transect}_organisms.csv",
+        sample_clusters_file = "results/tables/mycopins_{transect}_sample_clusters.csv"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "
             "{input.batch_environment_files} "
             "{input.batch_community_files} "
+            "{input.batch_organisms_files} "
+            "{input.batch_sample_clusters_files} "
             "{output.environment_file} "
-            "{output.community_file}"
+            "{output.community_file} "
+            "{output.organisms_file} "
+            "{output.sample_clusters_file}"
         )
 
 rule reduce_transects:
@@ -30,15 +44,29 @@ rule reduce_transects:
         transect_community_files = expand(
             "results/tables/mycopins_{transect}_community.csv",
             transect=TRANSECTS
+        ),
+        transect_organisms_files = expand(
+            "results/tables/mycopins_{transect}_organisms.csv",
+            transect=TRANSECTS
+        ),
+        transect_sample_clusters_files = expand(
+            "results/tables/mycopins_{transect}_sample_clusters.csv",
+            transect=TRANSECTS
         )
     output:
         environment_file = "results/tables/oulanka_mycopins_environment.csv",
-        community_file = "results/tables/oulanka_mycopins_community.csv"
+        community_file = "results/tables/oulanka_mycopins_community.csv",
+        organisms_file = "results/tables/oulanka_mycopins_organisms.csv",
+        sample_clusters_file = "results/tables/oulanka_mycopins_sample_clusters.csv"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "
             "{input.transect_environment_files} "
             "{input.transect_community_files} "
+            "{input.transect_organisms_files} "
+            "{input.transect_sample_clusters_files} "
             "{output.environment_file} "
-            "{output.community_file}"
+            "{output.community_file} "
+            "{output.organisms_file} "
+            "{output.sample_clusters_file}"
         )
