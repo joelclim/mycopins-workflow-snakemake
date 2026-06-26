@@ -1,103 +1,248 @@
-# Snakemake workflow: Mycopins-Workflow-Snakemake
+# Mycopins Workflow (Snakemake)
 
-[![Snakemake](https://img.shields.io/badge/snakemake-≥5.7.0-brightgreen.svg)](https://snakemake.bitbucket.io)
-[![Build Status](https://travis-ci.org/snakemake-workflows/mycopins-workflow-snakemake.svg?branch=master)](https://travis-ci.org/snakemake-workflows/mycopins-workflow-snakemake)
+This repository contains a Snakemake workflow for processing fungal DNA metabarcoding outputs from SCATA and BLAST into curated MycoPINS-compatible tables, then aggregating them by transect and location and finally generating GBIF IPT export files.
 
-This is the template for a new Snakemake workflow. Replace this text with a comprehensive description covering the purpose and domain.
-Insert your code into the respective folders, i.e. `scripts`, `rules`, and `envs`. Define the entry point of the workflow in the `Snakefile` and the main configuration in the `config.yaml` file.
+## Workflow Goals
+
+The workflow is designed to:
+
+1. Clean SCATA count and cluster files for each batch.
+2. Join cleaned data with taxonomic identification results.
+3. Produce standardized outputs for:
+   - environment
+   - community
+   - organisms
+   - sample-cluster relationships
+4. Reduce per-batch outputs into transect-level products.
+5. Reduce transect-level outputs into location-level (Oulanka) products.
+6. Build GBIF IPT-ready text files (event core, occurrence, DNA-derived, occurrence-core mapping).
+
+## Repository Layout
+
+- config/: workflow configuration, including batch/transect mapping and source file paths.
+- data/: input data per batch (SCATA exports, BLAST results, environmental metadata).
+- resources/: reference databases used by R scripts (for example fungal traits and guild resources).
+- workflow/: Snakemake and script logic.
+  - workflow/Snakefile: entry point and default targets.
+  - workflow/rules/: rule definitions grouped by processing stage.
+  - workflow/scripts/: R scripts executed by rules.
+  - workflow/envs/mycopins.yaml: conda environment specification.
+- results/: generated outputs (tables, logs, reports, and GBIF IPT export files).
+
+## Rule Groups
+
+The workflow includes these rule groups.
+
+### 1) Cleaning (workflow/rules/clean.smk)
+
+- clean_scata_counts
+- clean_scata_clusters
+
+Purpose: clean raw SCATA count and cluster inputs for each batch.
+
+### 2) Identification (workflow/rules/identify.smk)
+
+- identify_clusters
+- identify_counts
+
+Purpose: enrich cleaned clusters/counts with taxonomic and MycoPINS-specific structure.
+
+### 3) Capture (workflow/rules/capture.smk)
+
+- capture_organisms
+- capture_sample_clusters
+
+Purpose: derive organisms and sample-cluster tables from complete/cleaned batch outputs.
+
+### 4) Reduction (workflow/rules/reduce.smk)
+
+- reduce_batches
+- reduce_transects
+
+Purpose: aggregate per-batch tables first to transect level, then to location level.
+
+### 5) GBIF IPT Export (workflow/rules/gbif.smk)
+
+- generate_gbif_event_core
+- generate_gbif_event_occurrence
+- generate_gbif_dna_derived
+- generate_gbif_occurrence_core
+
+Purpose: generate GBIF IPT-compatible files in results/report/ipt_gbif/.
+
+## Raw Data Location and Important Components
+
+Raw input data are stored in data/ and organized by batch folder (for example FA23-transectC, SP24-transectA-1, FA24-transectB-1).
+
+Each batch folder typically contains these critical components:
+
+1. SCATA count matrix
+   - File used by config as counts_file (for example all_tag_by_cluster_counts.txt).
+2. SCATA cluster table
+   - File used by config as cluster_file (for example all_clusters_scataXXXX.txt).
+3. BLAST consolidated results
+   - blast_consolidated.csv
+4. Environmental metadata
+   - *-env.csv
+
+The workflow resolves these source files from config/config.yaml under:
+
+- batches.<batch>.counts_file
+- batches.<batch>.cluster_file
+- batches.<batch>.blast_results_file
+- batches.<batch>.environnment_file
+
+Important: the key is spelled environnment_file in the current config.
+
+## R Scripts and Runtime Notes
+
+Rules execute R scripts via Rscript from workflow/scripts/ and workflow/scripts/ipt_gbif/. Examples include:
+
+- clean_scata_counts.R
+- identify_counts.R
+- reduce_batches.R
+- ipt_gbif/generate_gbif_event_core.R
+
+Because the workflow depends on R packages, make sure your conda environment includes the required R stack and is active when running Snakemake.
+
+## Cross-Platform Setup (Windows, macOS, Linux)
+
+This workflow is easiest and most reproducible with Miniconda.
+
+### 1) Install Miniconda
+
+- Windows: install Miniconda from the official installer and use Miniconda Prompt (or PowerShell with conda initialized).
+- macOS: install Miniconda and initialize your shell.
+- Linux: install Miniconda and initialize your shell.
+
+Official docs: https://docs.conda.io/projects/miniconda/
+
+### 2) Create and activate an environment
+
+From repository root:
+
+```bash
+conda env create -f workflow/envs/mycopins.yaml
+conda activate mycopins
+```
+
+### 3) Verify toolchain
+
+```bash
+snakemake --version
+Rscript --version
+```
+
+### 4) Optional: use Snakemake with conda/singularity flags
+
+The Snakefile defines a singularity base image and can be run with --use-singularity when needed.
+
+## How to Execute the Workflow
+
+Run from repository root.
+
+### Dry run
+
+```bash
+snakemake -n --cores 1
+```
+
+### Full execution
+
+```bash
+snakemake --cores 4
+```
+
+Adjust --cores to your machine.
+
+### Force rerun a rule
+
+```bash
+snakemake --cores 4 -R reduce_transects
+```
+
+### Target specific outputs
+
+```bash
+snakemake --cores 4 results/tables/oulanka_mycopins_community.csv
+```
+
+## How to Debug the Workflow
+
+Useful commands for diagnosing issues:
+
+```bash
+snakemake -n -p --reason
+snakemake --cores 1 -p --printshellcmds
+snakemake --cores 1 --rerun-incomplete
+snakemake --cores 1 --keep-going
+```
+
+Primary logs are written to results/logs/ by rule.
+
+If an R step fails, run the same Rscript command from the corresponding log to reproduce the error outside Snakemake.
+
+## How to Delete Outputs
+
+Snakemake-managed cleanup:
+
+```bash
+snakemake --delete-all-output
+```
+
+Delete temporary outputs only:
+
+```bash
+snakemake --delete-temp-output
+```
+
+Manual cleanup (entire results directory):
+
+- Linux/macOS:
+
+```bash
+rm -rf results/*
+```
+
+- Windows PowerShell:
+
+```powershell
+Remove-Item -Path results\* -Recurse -Force
+```
+
+## How to Show Workflow Summary
+
+```bash
+snakemake --summary
+snakemake --detailed-summary
+```
+
+These commands show file status, freshness, and provenance for rule outputs.
+
+## How to Create DAG, Rulegraph, and Filegraph Images
+
+Graph rendering requires Graphviz (dot command).
+
+### Install Graphviz
+
+- Linux: use your distro package manager.
+- macOS: brew install graphviz
+- Windows: install Graphviz and ensure dot is in PATH.
+
+### Generate graph source and PNG images
+
+```bash
+snakemake --dag | dot -Tpng > results/report/dag.png
+snakemake --rulegraph | dot -Tpng > results/report/rulegraph.png
+snakemake --filegraph | dot -Tpng > results/report/filegraph.png
+```
+
+For large workflows, SVG is often easier to inspect:
+
+```bash
+snakemake --dag | dot -Tsvg > results/report/dag.svg
+```
 
 ## Authors
 
-* Joel Lim (@Joel Lim)
-
-## Usage
-
-If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and, if available, its DOI (see above).
-
-### Step 1: Obtain a copy of this workflow
-
-1. Create a new github repository using this workflow [as a template](https://help.github.com/en/articles/creating-a-repository-from-a-template).
-2. [Clone](https://help.github.com/en/articles/cloning-a-repository) the newly created repository to your local system, into the place where you want to perform the data analysis.
-
-### Step 2: Configure workflow
-
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify your sample setup.
-
-### Step 3: Install Snakemake
-
-Install Snakemake using [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html):
-
-    conda create -c bioconda -c conda-forge -n snakemake snakemake
-
-For installation details, see the [instructions in the Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html).
-
-### Step 4: Execute workflow
-
-Activate the conda environment:
-
-    conda activate snakemake
-
-Test your configuration by performing a dry-run via
-
-    snakemake --use-conda -n
-
-Execute the workflow locally via
-
-    snakemake --use-conda --cores $N
-
-using `$N` cores or run it in a cluster environment via
-
-    snakemake --use-conda --cluster qsub --jobs 100
-
-or
-
-    snakemake --use-conda --drmaa --jobs 100
-
-If you not only want to fix the software stack but also the underlying OS, use
-
-    snakemake --use-conda --use-singularity
-
-in combination with any of the modes above.
-See the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/executable.html) for further details.
-
-### Step 5: Investigate results
-
-After successful execution, you can create a self-contained interactive HTML report with all results via:
-
-    snakemake --report report.html
-
-This report can, e.g., be forwarded to your collaborators.
-An example (using some trivial test data) can be seen [here](https://cdn.rawgit.com/snakemake-workflows/rna-seq-kallisto-sleuth/master/.test/report.html).
-
-### Step 6: Commit changes
-
-Whenever you change something, don't forget to commit the changes back to your github copy of the repository:
-
-    git commit -a
-    git push
-
-### Step 7: Obtain updates from upstream
-
-Whenever you want to synchronize your workflow copy with new developments from upstream, do the following.
-
-1. Once, register the upstream repository in your local copy: `git remote add -f upstream git@github.com:snakemake-workflows/mycopins-workflow-snakemake.git` or `git remote add -f upstream https://github.com/snakemake-workflows/mycopins-workflow-snakemake.git` if you do not have setup ssh keys.
-2. Update the upstream version: `git fetch upstream`.
-3. Create a diff with the current version: `git diff HEAD upstream/master workflow > upstream-changes.diff`.
-4. Investigate the changes: `vim upstream-changes.diff`.
-5. Apply the modified diff via: `git apply upstream-changes.diff`.
-6. Carefully check whether you need to update the config files: `git diff HEAD upstream/master config`. If so, do it manually, and only where necessary, since you would otherwise likely overwrite your settings and samples.
-
-
-### Step 8: Contribute back
-
-In case you have also changed or added steps, please consider contributing them back to the original repository:
-
-1. [Fork](https://help.github.com/en/articles/fork-a-repo) the original repo to a personal or lab account.
-2. [Clone](https://help.github.com/en/articles/cloning-a-repository) the fork to your local system, to a different place than where you ran your analysis.
-3. Copy the modified files from your analysis to the clone of your fork, e.g., `cp -r workflow path/to/fork`. Make sure to **not** accidentally copy config file contents or sample sheets. Instead, manually update the example config files if necessary.
-4. Commit and push your changes to your fork.
-5. Create a [pull request](https://help.github.com/en/articles/creating-a-pull-request) against the original repository.
-
-## Testing
-
-Test cases are in the subfolder `.test`. They are automatically executed via continuous integration with [Github Actions](https://github.com/features/actions).
+- Joel Lim
