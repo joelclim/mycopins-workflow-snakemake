@@ -17,34 +17,22 @@ source("workflow/scripts/script_helpers.R")
 #
 source("workflow/scripts/ipt_gbif/oulanka_helpers.R")
 
+source("workflow/scripts/weather_db.R")
+weather_db <- WeatherDb$new()
+
 create_gbif_event_dynamic_properties <- function(site_letter, env_record) {
   dynamic_properties_df <- data.frame(
     woodType = get_wood_type(site_letter),
     woodTexture = get_wood_texture(site_letter)
   )
 
-  # TODO: Add weather data to dynamic properties
-  # weather_df <- data.frame(
-  #   mintemp = env_record$mintemp,
-  #   maxtemp = env_record$maxtemp,
-  #   avgtemp = env_record$avgtemp,
-  #   minhumidity = env_record$minhumidity,
-  #   maxhumidity = env_record$maxhumidity,
-  #   avghumidity = env_record$avghumidity,
-  #   minpressure = env_record$minpressure,
-  #   maxpressure = env_record$maxpressure,
-  #   avgpressure = env_record$avgpressure,
-  #   minheatindex = env_record$minheatindex,
-  #   maxheatindex = env_record$maxheatindex,
-  #   avgheatindex = env_record$avgheatindex,
-  #   mindewpoint = env_record$mindewpoint,
-  #   maxdewpoint = env_record$maxdewpoint,
-  #   avgdewpoint = env_record$avgdewpoint,
-  #   minfeelslike = env_record$minfeelslike,
-  #   maxfeelslike = env_record$maxfeelslike,
-  #   avgfeelslike = env_record$avgfeelslike
-  # )
-  # dynamic_properties_df$weather <- weather_df
+  transect <- env_record$Transect
+  collection_date <- env_record$Date.Collected
+
+  weather_record <- weather_db$get_record(transect, collection_date)
+  if (nrow(weather_record) == 1) {
+    dynamic_properties_df <- cbind(dynamic_properties_df, weather_record)
+  }
 
   return(dynamic_properties_df)
 }

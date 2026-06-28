@@ -34,14 +34,17 @@ create_gbif_occurrence_dynamic_properties <- function(site_letter, sample_cluste
     dynamic_properties_df$match <- list(match_df)
   }
 
-  if (nrow(organism) > 0 &
-    'fungal_traits.primary_lifestyle'%in% colnames(organism)) {
-    fungal_traits_df <- data.frame(
-      primaryLifestyle = organism$fungal_traits.primary_lifestyle,
-      secondaryLifestyle = organism$fungal_traits.secondary_lifestyle
-    )
-    dynamic_properties_df$fungalTraits <- fungal_traits_df
-  }
+  if (nrow(organism) > 0) {}
+    if ('fungal_traits.primary_lifestyle' %in% colnames(organism)) {
+      fungal_traits_df <- data.frame(
+        primaryLifestyle = organism$fungal_traits.primary_lifestyle,
+        secondaryLifestyle = organism$fungal_traits.secondary_lifestyle
+      )
+      dynamic_properties_df$fungalTraits <- fungal_traits_df
+    }
+    if ('is_saproxylic' %in% colnames(organism)) {
+      dynamic_properties_df$isSaproxylic <- organism$is_saproxylic
+    }
 
   return(dynamic_properties_df)
 }
