@@ -3,7 +3,12 @@ rule clean_scata_counts:
         config_file = "config/config.yaml"
     output:
         cleaned_counts_file = "results/tables/{batch}_cleaned_counts.csv",
-        cleaned_counts_qc_file = "results/report/{batch}_cleaned_counts_qc.txt"
+        cleaned_counts_qc_file = report(
+            "results/report/{batch}_cleaned_counts_qc.txt",
+            caption="../report/cleaned_counts_qc.rst",
+            category="Quality control",
+            labels={"batch": "{batch}", "artifact": "Cleaned counts QC"}
+        )
     log:
         "results/logs/{batch}_clean_scata_counts.log"
     benchmark:

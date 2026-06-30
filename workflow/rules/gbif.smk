@@ -3,7 +3,12 @@ rule generate_gbif_event_core:
         config_file = "config/config.yaml",
         environment_file = "results/tables/oulanka_mycopins_environment.csv",
     output:
-        output_file = "results/report/ipt_gbif/event.txt"
+        output_file = report(
+            "results/report/ipt_gbif/event.txt",
+            caption="../report/gbif_event.rst",
+            category="GBIF / IPT",
+            labels={"artifact": "Event core"}
+        )
     log:
         "results/logs/generate_gbif_event_core.log"
     benchmark:
@@ -25,7 +30,12 @@ rule generate_gbif_event_occurrence:
         organisms_file = "results/tables/oulanka_mycopins_organisms.csv",
         sample_cluster_file = "results/tables/oulanka_mycopins_sample_clusters.csv",
     output:
-        output_file = "results/report/ipt_gbif/occurrence.txt"
+        output_file = report(
+            "results/report/ipt_gbif/occurrence.txt",
+            caption="../report/gbif_occurrence.rst",
+            category="GBIF / IPT",
+            labels={"artifact": "Occurrence"}
+        )
     log:
         "results/logs/generate_gbif_event_occurrence.log"
     benchmark:
@@ -45,7 +55,12 @@ rule generate_gbif_dna_derived:
         community_file = "results/tables/oulanka_mycopins_community.csv",
         sample_cluster_file = "results/tables/oulanka_mycopins_sample_clusters.csv",
     output:
-        output_file = "results/report/ipt_gbif/dna-derived.txt"
+        output_file = report(
+            "results/report/ipt_gbif/dna-derived.txt",
+            caption="../report/gbif_dna_derived.rst",
+            category="GBIF / IPT",
+            labels={"artifact": "DNA-derived data"}
+        )
     log:
         "results/logs/generate_gbif_dna_derived.log"
     benchmark:
@@ -64,7 +79,12 @@ rule generate_gbif_occurrence_core:
         event_core_file = "results/report/ipt_gbif/event.txt",
         event_occurrence_file = "results/report/ipt_gbif/occurrence.txt",
     output:
-        output_file = "results/report/ipt_gbif/occurrence-core.txt"
+        output_file = report(
+            "results/report/ipt_gbif/occurrence-core.txt",
+            caption="../report/gbif_occurrence_core.rst",
+            category="GBIF / IPT",
+            labels={"artifact": "Occurrence core"}
+        )
     log:
         "results/logs/generate_gbif_occurrence_core.log"
     benchmark:
