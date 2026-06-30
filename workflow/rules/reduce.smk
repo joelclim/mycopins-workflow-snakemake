@@ -24,8 +24,12 @@ rule reduce_batches:
         sample_clusters_file = "results/tables/mycopins_{transect}_sample_clusters.csv"
     log:
         "results/logs/{transect}_reduce_batches.log"
+    benchmark:
+        "results/benchmarks/{transect}_reduce_batches.tsv"
     conda:
         "../envs/mycopins.yaml"
+    resources:
+        mem_mb=8000
     script:
         "../scripts/reduce_batches.R"
 
@@ -54,7 +58,11 @@ rule reduce_transects:
         sample_clusters_file = "results/tables/oulanka_mycopins_sample_clusters.csv"
     log:
         "results/logs/oulanka_reduce_transects.log"
+    benchmark:
+        "results/benchmarks/oulanka_reduce_transects.tsv"
     conda:
         "../envs/mycopins.yaml"
+    resources:
+        mem_mb=8000
     script:
         "../scripts/reduce_batches.R"

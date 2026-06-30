@@ -28,10 +28,14 @@ rule identify_clusters:
         output_file = "results/tables/{batch}_complete_clusters.csv"
     log:
         "results/logs/{batch}_identify_clusters.log"
+    benchmark:
+        "results/benchmarks/{batch}_identify_clusters.tsv"
     params:
         batch ="{batch}"
     conda:
         "../envs/mycopins.yaml"
+    resources:
+        mem_mb=4000
     script:
         "../scripts/identify_clusters.R"
 
@@ -45,7 +49,11 @@ rule identify_counts:
         out_mycopins_community_file = "results/tables/{batch}_mycopins_community.csv"
     log:
         "results/logs/{batch}_identify_counts.log"
+    benchmark:
+        "results/benchmarks/{batch}_identify_counts.tsv"
     conda:
         "../envs/mycopins.yaml"
+    resources:
+        mem_mb=4000
     script:
         "../scripts/identify_counts.R"
