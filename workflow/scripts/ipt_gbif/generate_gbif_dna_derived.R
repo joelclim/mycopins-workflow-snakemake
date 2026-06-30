@@ -109,8 +109,7 @@ usage <- "Usage: Rscript generate_gbif_dna_derived.R <location> <config file> <c
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("location", "config_file", "community_file", "sample_cluster_file", "output_file"),
     usage
   )

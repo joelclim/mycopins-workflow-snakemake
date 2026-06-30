@@ -30,8 +30,7 @@ usage <- "Usage: Rscript identify_clusters.R <batch> <config file> <cleaned_clus
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("batch", "cleaned_clusters_file", "manual_blast_file", "output_file"),
     usage
   )
@@ -50,14 +49,6 @@ main <- function() {
     show_col_types = FALSE,
     locale = locale(encoding = "UTF-8")
   )
-
-  scata6398_2 <- cleaned_clusters_df %>%
-    filter(`Cluster ID` == "scata6398_2")
-  message("[identify_clusters] scata6398_2 cleaned cluster:", paste(scata6398_2, collapse = ", "))
-
-  scata6398_2_top_match <- top_match_df %>%
-    filter(job_id == "scata6398" & cluster_num == "2")
-  message("[identify_clusters] scata6398_2 top match:", paste(scata6398_2_top_match, collapse = ", "))
 
   result <- apply_top_match_to_clusters(top_match_df, cleaned_clusters_df)
 

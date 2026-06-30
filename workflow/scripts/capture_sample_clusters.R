@@ -176,8 +176,7 @@ usage <- "Usage: Rscript capture_sample_clusters.R <batch> <cleaned_counts_file>
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("batch", "cleaned_counts_file", "complete_clusters_file", "output_file"),
     usage
   )

@@ -45,8 +45,7 @@ usage <- "Usage: Rscript identify_counts.R <cleaned_counts_file> <complete_clust
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c(
       "cleaned_counts_file",
       "complete_clusters_file",

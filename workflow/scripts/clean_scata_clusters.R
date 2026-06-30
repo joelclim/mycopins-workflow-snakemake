@@ -158,8 +158,7 @@ usage <- "Usage: Rscript clean_scata_clusters.R <batch> <blast_fasta_folder> <co
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("batch", "blast_fasta_folder", "config_file", "output_file"),
     usage
   )

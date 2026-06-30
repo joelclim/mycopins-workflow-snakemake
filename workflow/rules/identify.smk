@@ -25,42 +25,27 @@ rule identify_clusters:
         cleaned_clusters_file = "results/tables/{batch}_cleaned_clusters.csv",
         manual_blast_file = require_manual_blast_file
     output:
-        complete_clusters_file = "results/tables/{batch}_complete_clusters.csv"
+        output_file = "results/tables/{batch}_complete_clusters.csv"
     log:
         "results/logs/{batch}_identify_clusters.log"
     params:
         batch ="{batch}"
     conda:
         "../envs/mycopins.yaml"
-    shell:
-        (
-            "Rscript workflow/scripts/identify_clusters.R "
-            "{params.batch} "
-            "{input.cleaned_clusters_file} "
-            "{input.manual_blast_file} "
-            "{output.complete_clusters_file} "
-            "2>&1 | tee {log}"
-        )
+    script:
+        "../scripts/identify_clusters.R"
 
 rule identify_counts:
     input:
         cleaned_counts_file = "results/tables/{batch}_cleaned_counts.csv",
         complete_clusters_file = "results/tables/{batch}_complete_clusters.csv"
     output:
-        complete_counts_file = "results/tables/{batch}_complete_counts.csv",
-        mycopins_environment_file = "results/tables/{batch}_mycopins_environment.csv",
-        mycopins_community_file = "results/tables/{batch}_mycopins_community.csv"
+        out_complete_counts_file = "results/tables/{batch}_complete_counts.csv",
+        out_mycopins_environment_file = "results/tables/{batch}_mycopins_environment.csv",
+        out_mycopins_community_file = "results/tables/{batch}_mycopins_community.csv"
     log:
         "results/logs/{batch}_identify_counts.log"
     conda:
         "../envs/mycopins.yaml"
-    shell:
-        (
-            "Rscript workflow/scripts/identify_counts.R "
-            "{input.cleaned_counts_file} "
-            "{input.complete_clusters_file} "
-            "{output.complete_counts_file} "
-            "{output.mycopins_environment_file} "
-            "{output.mycopins_community_file} "
-            "2>&1 | tee {log}"
-        )
+    script:
+        "../scripts/identify_counts.R"

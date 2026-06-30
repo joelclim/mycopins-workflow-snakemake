@@ -65,8 +65,7 @@ usage <- "Usage: Rscript generate_gbif_occurrence_core.R <event core file> <even
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("event_core_file", "event_occurrence_file", "output_file"),
     usage
   )

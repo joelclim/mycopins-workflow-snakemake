@@ -217,8 +217,7 @@ usage <- "Usage: Rscript capture_organisms.R <batch> <config file> <output_file>
 main <- function() {
   options(warn = 2) # Reset warning level to default
 
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("batch", "complete_clusters_file", "output_file"),
     usage
   )

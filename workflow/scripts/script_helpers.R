@@ -14,6 +14,34 @@ parse_named_args <- function(args, arg_names, usage, abort_fn = abort_script) {
   parsed_args
 }
 
+# Resolve named script arguments from the Snakemake S4 `snakemake` object when a
+# rule runs the script via the `script:` directive, and fall back to positional
+# command-line parsing for standalone `Rscript ...` runs. Each name is looked up
+# across params, wildcards, input, and output slots (in that order), so a rule
+# must expose a slot whose key matches each requested argument name.
+get_script_args <- function(arg_names, usage, abort_fn = abort_script) {
+  if (!exists("snakemake")) {
+    return(parse_named_args(commandArgs(trailingOnly = TRUE), arg_names, usage, abort_fn))
+  }
+
+  sm <- get("snakemake")
+  slots <- list(sm@params, sm@wildcards, sm@input, sm@output)
+
+  lookup <- function(name) {
+    for (slot in slots) {
+      slot_names <- names(slot)
+      if (!is.null(slot_names) && name %in% slot_names) {
+        return(as.character(slot[[name]]))
+      }
+    }
+    abort_fn(paste0("No Snakemake input/output/param/wildcard named '", name, "'."))
+  }
+
+  args <- lapply(arg_names, lookup)
+  names(args) <- arg_names
+  args
+}
+
 # Load the workflow YAML config, installing the package when needed.
 load_yaml_config <- function(config_file) {
   suppressPackageStartupMessages(if (!require("yaml")) install.packages("yaml"))

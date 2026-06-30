@@ -249,11 +249,29 @@ get_args <- function(raw_args) {
 # The main function
 # ------------------
 main <- function() {
-  raw_args <- commandArgs(trailingOnly = TRUE)
-  if (length(raw_args) < 8) {
-    abort_script(usage)
+  if (exists("snakemake")) {
+    # Run via Snakemake's `script:` directive: read the named file-list inputs
+    # and scalar outputs directly from the `snakemake` object.
+    args <- get_script_args(
+      c(
+        "batch_environment_files",
+        "batch_community_files",
+        "batch_organisms_files",
+        "batch_sample_clusters_files",
+        "environment_file",
+        "community_file",
+        "organism_file",
+        "sample_clusters_file"
+      ),
+      usage
+    )
+  } else {
+    raw_args <- commandArgs(trailingOnly = TRUE)
+    if (length(raw_args) < 8) {
+      abort_script(usage)
+    }
+    args <- get_args(raw_args)
   }
-  args <- get_args(raw_args)
 
   batch_env_files <- args$batch_environment_files
   batch_comm_files <- args$batch_community_files

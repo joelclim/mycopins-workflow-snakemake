@@ -156,8 +156,7 @@ usage <- "Usage: Rscript generate_gbif_event_core.R <location> <config file> <en
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("location", "config_file", "environment_file", "output_file"),
     usage
   )

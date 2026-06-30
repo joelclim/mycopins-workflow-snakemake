@@ -306,8 +306,7 @@ usage <- "Usage: Rscript clean_scata_counts.R <batch> <config file> <output_file
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c(
       "batch",
       "config_file",

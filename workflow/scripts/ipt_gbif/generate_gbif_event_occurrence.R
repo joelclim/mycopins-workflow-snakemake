@@ -294,8 +294,7 @@ usage <- "Usage: Rscript generate_gbif_event_occurrence.R <location> <config fil
 # The main function
 # ------------------
 main <- function() {
-  args <- parse_named_args(
-    commandArgs(trailingOnly = TRUE),
+  args <- get_script_args(
     c("location",
       "config_file",
       "environment_file",
