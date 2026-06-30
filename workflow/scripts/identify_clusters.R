@@ -2,9 +2,13 @@
 
 # Identify the genus-species for each cluster based on the top BLAST match, and add this information to the cluster data frame.
 # Usage:
-#   Rscript identify_clusters.R <batch> <config file> <cleaned_clusters_file> <output_file>
+#   Rscript identify_clusters.R <batch> <cleaned_clusters_file> <manual_blast_file> <output_file>
 # Example:
-#   Rscript identify_clusters.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv results/tables/fa23_transectC_complete_clusters.csv
+#   Rscript workflow/scripts/identify_clusters.R
+#           fa23_transectC
+#           results/tables/fa23_transectC_cleaned_clusters.csv
+#           data/blast/manual_blast.csv
+#           results/tables/fa23_transectC_complete_clusters.csv
 
 source("workflow/scripts/normalize_name.R")
 source("workflow/scripts/get_gbif_accepted_name.R")
@@ -20,7 +24,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
 
-usage <- "Usage: Rscript identify_clusters.R <batch> <config file> <output_file>"
+usage <- "Usage: Rscript identify_clusters.R <batch> <config file> <cleaned_clusters_file> <manual_blast_file> <output_file>"
 
 # ------------------
 # The main function
@@ -28,21 +32,15 @@ usage <- "Usage: Rscript identify_clusters.R <batch> <config file> <output_file>
 main <- function() {
   args <- parse_named_args(
     commandArgs(trailingOnly = TRUE),
-    c("batch", "config_file", "cleaned_clusters_file", "output_file"),
+    c("batch", "cleaned_clusters_file", "manual_blast_file", "output_file"),
     usage
-  )
-  batch_config <- load_config(
-    args$config_file,
-    "batches",
-    args$batch,
-    c("blast_results_file")
   )
 
   message("     Processing batch: ", args$batch)
   message("Cleaned clusters file: ", args$cleaned_clusters_file)
-  message("   Blast results file: ", batch_config$blast_results_file)
+  message("   Blast results file: ", args$manual_blast_file)
 
-  blast_results_df <- read_csv(batch_config$blast_results_file,
+  blast_results_df <- read_csv(args$manual_blast_file,
     show_col_types = FALSE,
     locale = locale(encoding = "UTF-8")
   )
@@ -52,6 +50,15 @@ main <- function() {
     show_col_types = FALSE,
     locale = locale(encoding = "UTF-8")
   )
+
+  scata6398_2 <- cleaned_clusters_df %>%
+    filter(`Cluster ID` == "scata6398_2")
+  message("[identify_clusters] scata6398_2 cleaned cluster:", paste(scata6398_2, collapse = ", "))
+
+  scata6398_2_top_match <- top_match_df %>%
+    filter(job_id == "scata6398" & cluster_num == "2")
+  message("[identify_clusters] scata6398_2 top match:", paste(scata6398_2_top_match, collapse = ", "))
+
   result <- apply_top_match_to_clusters(top_match_df, cleaned_clusters_df)
 
   write.csv(result,

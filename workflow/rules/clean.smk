@@ -26,11 +26,13 @@ rule clean_scata_clusters:
     log:
         "results/logs/{batch}_clean_scata_clusters.log"
     params:
-        batch = "{batch}"
+        batch = "{batch}",
+        blast_fasta_folder = "data/blast/{batch}/"
     shell:
         (
             "Rscript workflow/scripts/clean_scata_clusters.R "
             "{params.batch} "
+            "{params.blast_fasta_folder} "
             "{input} "
             "{output.cleaned_clusters_file} "
             "2>&1 | tee {log}"

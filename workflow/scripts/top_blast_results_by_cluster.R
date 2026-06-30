@@ -136,8 +136,7 @@ get_best_match <- function(cluster_result_df) {
 ## A new CSV file is created containing the top match for each cluster.
 ##
 ################################################################################
-top_blast_results_by_cluster <- function(consolidated_blast_df) {
-  # Group together rows by cluster id.
+top_blast_results_by_cluster <- function(consolidated_blast_df) {  # Group together rows by cluster id.
   # For each cluster group, sort based on cluster num, evalue exponent asc,
   #   evalue coefficient desc, percent identity and hit num
   df <- consolidated_blast_df %>%
@@ -147,25 +146,29 @@ top_blast_results_by_cluster <- function(consolidated_blast_df) {
       desc(percent_identity), hit_num
     )
 
-  # Determine the cluster numbers and sort them in asc order
-  cluster_nums <- sort(unique(df$cluster_num))
+  # Determine the cluster ids and sort them by job id then cluster number so
+  # clusters from different SCATA jobs are evaluated independently.
+  cluster_ids <- df %>%
+    distinct(cluster_id, job_id, cluster_num) %>%
+    arrange(job_id, cluster_num) %>%
+    pull(cluster_id)
 
   # Create an empty data frame with the same structure as the merged data frame.
   top_match_df <- data.frame(matrix(ncol = ncol(df), nrow = 0))
   colnames(top_match_df) <- names(df)
 
   # For each cluster, determine the top match from the BLAST results.
-  for (i in seq_along(cluster_nums)) {
-    cluster_num <- cluster_nums[i]
+  for (i in seq_along(cluster_ids)) {
+    cluster_id <- cluster_ids[i]
 
-    cluster_result_df <- df[df$cluster_num == cluster_num, ]
+    cluster_result_df <- df[df$cluster_id == cluster_id, ]
 
     best_match <- get_best_match(cluster_result_df)
 
     top_match_df <- rbind(top_match_df, best_match)
   }
 
-  sorted_top_match_df <- top_match_df[order(top_match_df$cluster_num), ]
+  sorted_top_match_df <- top_match_df[order(top_match_df$job_id, top_match_df$cluster_num), ]
 
   return(sorted_top_match_df)
 }
