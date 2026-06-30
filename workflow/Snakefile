@@ -1,7 +1,12 @@
 # The main entry point of your workflow.
 # After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 
+from snakemake.utils import validate
+
 configfile: "config/config.yaml"
+
+# Fail fast on config typos / missing keys (batches, transects, ipt_gbif, ...).
+validate(config, "schemas/config.schema.yaml")
 
 LOCATION = config["location"]
 BATCHES = list(config["batches"].keys())

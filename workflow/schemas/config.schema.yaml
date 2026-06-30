@@ -1,14 +1,127 @@
 $schema: "http://json-schema.org/draft-04/schema#"
 
-description: snakemake configuration file
+description: MycoPins workflow configuration file
 
 type: object
 
-# possible entries of the config file and which type they should be
 properties:
   samples:
     type: string
+  raw_dir:
+    type: string
+  processed_dir:
+    type: string
+  results_data_dir:
+    type: string
+  manual_blast_dir:
+    type: string
+  location:
+    type: string
+    description: config key into ipt_gbif and prefix for the site-level output tables
 
-# entries that have to be in the config file for successful validation
+  batches:
+    type: object
+    minProperties: 1
+    # Each batch is keyed by its batch id (e.g. fa23_transectC).
+    additionalProperties:
+      type: object
+      properties:
+        dataset_name:
+          type: string
+        scata_job_id:
+          type: string
+        counts_file:
+          type: string
+        cluster_file:
+          type: string
+        # NOTE: misspelled key is intentional — clean_scata_counts.R reads
+        # "environnment_file" and renames it internally. Do not "fix" the
+        # spelling here without also updating the config and that script.
+        environnment_file:
+          type: string
+        blast_results_file:
+          type: string
+      required:
+        - dataset_name
+        - counts_file
+        - cluster_file
+        - environnment_file
+      # Reject unknown keys so typos in batch fields fail validation early.
+      additionalProperties: false
+
+  transects:
+    type: object
+    minProperties: 1
+    # Each transect maps to the ordered list of batch ids it comprises.
+    additionalProperties:
+      type: array
+      minItems: 1
+      items:
+        type: string
+
+  ipt_gbif:
+    type: object
+    minProperties: 1
+    # Each entry is keyed by a location id (must match the `location` value).
+    additionalProperties:
+      type: object
+      properties:
+        location:
+          type: string
+        sampling_protocol:
+          type: string
+        location_id:
+          type: string
+        country_code:
+          type: string
+        country:
+          type: string
+        state_province:
+          type: string
+        municipality:
+          type: string
+        basis_of_record:
+          type: string
+        organism_quantity_type:
+          type: string
+        lib_layout:
+          type: string
+        target_gene:
+          type: string
+        target_subfragment:
+          type: string
+        seq_method:
+          type: string
+        otu_db:
+          type: string
+        pcr_primer_name_forward:
+          type: string
+        pcr_primer_name_reverse:
+          type: string
+        pcr_primer_reference:
+          type: string
+      required:
+        - location
+        - sampling_protocol
+        - location_id
+        - country_code
+        - country
+        - state_province
+        - municipality
+        - basis_of_record
+        - organism_quantity_type
+        - lib_layout
+        - target_gene
+        - target_subfragment
+        - seq_method
+        - otu_db
+        - pcr_primer_name_forward
+        - pcr_primer_name_reverse
+        - pcr_primer_reference
+
 required:
   - samples
+  - location
+  - batches
+  - transects
+  - ipt_gbif
