@@ -30,6 +30,8 @@ rule identify_clusters:
         "results/logs/{batch}_identify_clusters.log"
     params:
         batch ="{batch}"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/identify_clusters.R "
@@ -50,6 +52,8 @@ rule identify_counts:
         mycopins_community_file = "results/tables/{batch}_mycopins_community.csv"
     log:
         "results/logs/{batch}_identify_counts.log"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/identify_counts.R "

@@ -24,6 +24,8 @@ rule reduce_batches:
         sample_clusters_file = "results/tables/mycopins_{transect}_sample_clusters.csv"
     log:
         "results/logs/{transect}_reduce_batches.log"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "
@@ -63,6 +65,8 @@ rule reduce_transects:
         sample_clusters_file = "results/tables/oulanka_mycopins_sample_clusters.csv"
     log:
         "results/logs/oulanka_reduce_transects.log"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/reduce_batches.R "

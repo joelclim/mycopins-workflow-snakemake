@@ -8,6 +8,8 @@ rule clean_scata_counts:
         "results/logs/{batch}_clean_scata_counts.log"
     params:
         batch = "{batch}"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/clean_scata_counts.R "
@@ -28,6 +30,8 @@ rule clean_scata_clusters:
     params:
         batch = "{batch}",
         blast_fasta_folder = "data/blast/{batch}/"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/clean_scata_clusters.R "

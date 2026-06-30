@@ -7,6 +7,8 @@ rule capture_organisms:
         "results/logs/{batch}_capture_organisms.log"
     params:
         batch = "{batch}"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/capture_organisms.R "
@@ -26,6 +28,8 @@ rule capture_sample_clusters:
         "results/logs/{batch}_capture_sample_clusters.log"
     params:
         batch = "{batch}"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/capture_sample_clusters.R "

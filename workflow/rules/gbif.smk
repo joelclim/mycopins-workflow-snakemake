@@ -8,6 +8,8 @@ rule generate_gbif_event_core:
         "results/logs/generate_gbif_event_core.log"
     params:
         location = {LOCATION}
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/ipt_gbif/generate_gbif_event_core.R "
@@ -31,6 +33,8 @@ rule generate_gbif_event_occurrence:
         "results/logs/generate_gbif_event_occurrence.log"
     params:
         location = {LOCATION}
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/ipt_gbif/generate_gbif_event_occurrence.R "
@@ -55,6 +59,8 @@ rule generate_gbif_dna_derived:
         "results/logs/generate_gbif_dna_derived.log"
     params:
         location = {LOCATION}
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/ipt_gbif/generate_gbif_dna_derived.R "
@@ -74,6 +80,8 @@ rule generate_gbif_occurrence_core:
         gbif_occurrence_core_file = "results/report/ipt_gbif/occurrence-core.txt"
     log:
         "results/logs/generate_gbif_occurrence_core.log"
+    conda:
+        "../envs/mycopins.yaml"
     shell:
         (
             "Rscript workflow/scripts/ipt_gbif/generate_gbif_occurrence_core.R "
