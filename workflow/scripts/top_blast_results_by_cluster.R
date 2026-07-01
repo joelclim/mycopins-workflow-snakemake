@@ -136,7 +136,8 @@ get_best_match <- function(cluster_result_df) {
 ## A new CSV file is created containing the top match for each cluster.
 ##
 ################################################################################
-top_blast_results_by_cluster <- function(consolidated_blast_df) {  # Group together rows by cluster id.
+top_blast_results_by_cluster <- function(consolidated_blast_df) {
+  # Group together rows by cluster id.
   # For each cluster group, sort based on cluster num, evalue exponent asc,
   #   evalue coefficient desc, percent identity and hit num
   df <- consolidated_blast_df %>%

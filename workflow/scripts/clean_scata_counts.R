@@ -4,7 +4,10 @@
 # Usage:
 #   Rscript clean_scata_counts.R <batch> <config file> <output_file>
 # Example:
-#   Rscript clean_scata_counts.R fa23_transectC config/config.yaml results/tables/fa23_transectC_cleaned_counts.csv
+#   Rscript workflow/scripts/clean_scata_counts.R
+#           fa23_transectC
+#           config/config.yaml
+#           results/tables/fa23_transectC_cleaned_counts.csv
 
 source("workflow/scripts/script_helpers.R")
 
@@ -335,7 +338,8 @@ main <- function() {
     cleaned_counts_qc_file = args$cleaned_counts_qc_file
   )
 
-  write.csv(result, file = args$cleaned_counts_file, row.names = FALSE, fileEncoding = "UTF-8")
+  write.csv(result, file = args$cleaned_counts_file,
+    row.names = FALSE, fileEncoding = "UTF-8")
   message("Done. Output written to: ", args$out_cleaned_counts_file)
 }
 

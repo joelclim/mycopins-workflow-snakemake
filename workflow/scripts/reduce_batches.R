@@ -4,7 +4,27 @@
 # Usage:
 #   Rscript reduce_batches.R <batch_environment_file...> <batch_community_file...> <batch_organisms_file...> <batch_sample_clusters_file...> <environment_file> <community_file> <organisms_file> <sample_clusters_file>
 # Example:
-#   Rscript workflow/scripts/reduce_batches.R results/tables/sp24_transectA-1_mycopins_environment.csv results/tables/sp24_transectA-2_mycopins_environment.csv results/tables/su24_transectA-1_mycopins_environment.csv results/tables/su24_transectA-2_mycopins_environment.csv results/tables/sp24_transectA-1_mycopins_community.csv results/tables/sp24_transectA-2_mycopins_community.csv results/tables/su24_transectA-1_mycopins_community.csv results/tables/su24_transectA-2_mycopins_community.csv results/tables/sp24_transectA-1_mycopins_organisms.csv results/tables/sp24_transectA-2_mycopins_organisms.csv results/tables/su24_transectA-1_mycopins_organisms.csv results/tables/su24_transectA-2_mycopins_organisms.csv results/tables/sp24_transectA-1_mycopins_sample_clusters.csv results/tables/sp24_transectA-2_mycopins_sample_clusters.csv results/tables/su24_transectA-1_mycopins_sample_clusters.csv results/tables/su24_transectA-2_mycopins_sample_clusters.csv results/tables/mycopins_transectA_environment.csv results/tables/mycopins_transectA_community.csv results/tables/mycopins_transectA_organisms.csv results/tables/mycopins_transectA_sample_clusters.csv
+#   Rscript workflow/scripts/reduce_batches.R
+#           results/tables/sp24_transectA-1_mycopins_environment.csv
+#           results/tables/sp24_transectA-2_mycopins_environment.csv
+#           results/tables/su24_transectA-1_mycopins_environment.csv
+#           results/tables/su24_transectA-2_mycopins_environment.csv
+#           results/tables/sp24_transectA-1_mycopins_community.csv
+#           results/tables/sp24_transectA-2_mycopins_community.csv
+#           results/tables/su24_transectA-1_mycopins_community.csv
+#           results/tables/su24_transectA-2_mycopins_community.csv
+#           results/tables/sp24_transectA-1_mycopins_organisms.csv
+#           results/tables/sp24_transectA-2_mycopins_organisms.csv
+#           results/tables/su24_transectA-1_mycopins_organisms.csv
+#           results/tables/su24_transectA-2_mycopins_organisms.csv
+#           results/tables/sp24_transectA-1_mycopins_sample_clusters.csv
+#           results/tables/sp24_transectA-2_mycopins_sample_clusters.csv
+#           results/tables/su24_transectA-1_mycopins_sample_clusters.csv
+#           results/tables/su24_transectA-2_mycopins_sample_clusters.csv
+#           results/tables/mycopins_transectA_environment.csv
+#           results/tables/mycopins_transectA_community.csv
+#           results/tables/mycopins_transectA_organisms.csv
+#           results/tables/mycopins_transectA_sample_clusters.csv
 
 merge_environments <- function(first_df, second_df) {
   # Merge env

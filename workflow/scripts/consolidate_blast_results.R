@@ -3,8 +3,12 @@
 
 #
 # Consolidate BLAST results from multiple JSON files into a single CSV file.
-# Usage: Rscript consolidate_blast_results.R <config_file> <output_file>
-# Example: Rscript workflow/scripts/consolidate_blast_results.R config/config.yaml data/blast/manual_blast.csv
+# Usage:
+#   Rscript consolidate_blast_results.R <config_file> <output_file>
+# Example:
+#   Rscript workflow/scripts/consolidate_blast_results.R
+#           config/config.yaml
+#           data/blast/manual_blast.csv
 #
 source("workflow/scripts/script_helpers.R")
 

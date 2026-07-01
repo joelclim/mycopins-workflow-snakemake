@@ -39,7 +39,7 @@ suppressPackageStartupMessages(if (!require("readr")) install.packages("readr"))
 suppressPackageStartupMessages(library(readr))
 source("workflow/scripts/script_helpers.R")
 
-usage <- "Usage: Rscript identify_counts.R <cleaned_counts_file> <complete_clusters_file> <output_file>"
+usage <- "Usage: Rscript identify_counts.R <cleaned_counts_file> <complete_clusters_file> <out_complete_counts_file> <out_mycopins_environment_file> <out_mycopins_community_file>"
 
 # ------------------
 # The main function

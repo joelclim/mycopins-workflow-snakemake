@@ -2,9 +2,13 @@
 
 # Create a clean clusters data frame for downstream analyses.
 # Usage:
-#   Rscript clean_scata_clusters.R <batch> <blast_fasta_folder>  <config file> <output_file>
+#   Rscript clean_scata_clusters.R <batch> <blast_fasta_folder> <config file> <output_file>
 # Example:
-#   Rscript clean_scata_clusters.R fa23_transectC results/blast/fa23_transectC/ config/config.yaml results/tables/fa23_transectC_cleaned_clusters.csv
+#   Rscript clean_scata_clusters.R
+#           fa23_transectC
+#           results/blast/fa23_transectC/
+#           config/config.yaml
+#           results/tables/fa23_transectC_cleaned_clusters.csv
 
 source("workflow/scripts/script_helpers.R")
 

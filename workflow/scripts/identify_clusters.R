@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# Identify the genus-species for each cluster based on the top BLAST match, and add this information to the cluster data frame.
+# Identify the genus-species for each cluster based on the top BLAST match,
+# and add this information to the cluster data frame.
 # Usage:
 #   Rscript identify_clusters.R <batch> <cleaned_clusters_file> <manual_blast_file> <output_file>
 # Example:

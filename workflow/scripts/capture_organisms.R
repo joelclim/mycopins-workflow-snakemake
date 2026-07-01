@@ -109,10 +109,13 @@ capture_organisms <- function(complete_clusters_file) {
           taxon$scientificName,
           nchar(taxon$canonicalName)+1,
           nchar(taxon$scientificName))), ""),
-      fungal_traits.primary_lifestyle = ifelse(length(genus_traits) == 2, genus_traits[1], ""),
-      fungal_traits.secondary_lifestyle = ifelse(length(genus_traits) == 2 &&
-                                                 !is.na(genus_traits[2]), genus_traits[2], ""),
-      is_saproxylic = ifelse(saproxylicfungi_db$is_saproxylic(organism), "yes", "no")
+      fungal_traits.primary_lifestyle =
+        ifelse(length(genus_traits) == 2, genus_traits[1], ""),
+      fungal_traits.secondary_lifestyle =
+        ifelse(length(genus_traits) == 2 &&
+          !is.na(genus_traits[2]), genus_traits[2], ""),
+      is_saproxylic =
+        ifelse(saproxylicfungi_db$is_saproxylic(organism), "yes", "no")
     )
 
     return(organism_record)
@@ -209,7 +212,7 @@ suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(if (!require("rgbif")) install.packages("rgbif"))
 suppressPackageStartupMessages(library(rgbif))
 
-usage <- "Usage: Rscript capture_organisms.R <batch> <config file> <output_file>"
+usage <- "Usage: Rscript capture_organisms.R <batch> <complete_clusters_file> <output_file>"
 
 # ------------------
 # The main function
