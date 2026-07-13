@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Identify the genus-species for each count based on the identified clusters, and add this information to the counts data frame.
 # Usage:

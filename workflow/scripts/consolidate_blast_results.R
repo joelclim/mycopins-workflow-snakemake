@@ -1,5 +1,5 @@
 
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 #
 # Consolidate BLAST results from multiple JSON files into a single CSV file.

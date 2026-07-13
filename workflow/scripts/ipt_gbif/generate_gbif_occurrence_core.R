@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Generate GBIF occurrence core records from MycoPins data.
 # Usage:

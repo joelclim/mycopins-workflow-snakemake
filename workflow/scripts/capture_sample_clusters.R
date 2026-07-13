@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Capture sample clusters and enrich with GBIF taxonomy, fungal traits,
 # and saproxylic fungi information.

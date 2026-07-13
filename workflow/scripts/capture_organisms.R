@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Capture organism records from GBIF for a list of organisms.
 # Usage:

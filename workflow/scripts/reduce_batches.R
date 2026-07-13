@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Merge batches of the same transect into a single environment and community data frame.
 # Usage:

@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Generate GBIF event occurrence records from MycoPins data.
 # Usage:

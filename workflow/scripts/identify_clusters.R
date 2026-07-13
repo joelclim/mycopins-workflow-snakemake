@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Identify the genus-species for each cluster based on the top BLAST match,
 # and add this information to the cluster data frame.
