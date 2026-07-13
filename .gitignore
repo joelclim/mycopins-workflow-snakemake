@@ -6,6 +6,7 @@ analysis/*
 !config/*
 !resources
 !resources/*
+!resources/fungaltraits/fungal_traits_for_genera.csv
 !workflow
 !workflow/**
 !.gitignore
