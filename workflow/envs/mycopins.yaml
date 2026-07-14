@@ -11,3 +11,5 @@ dependencies:
   - r-readr=2.2.0
   - r-tidyverse=2.0.0
   - r-yaml=2.3.12
+  - snakemake=9.22.0
+  - graphviz=14.1.2

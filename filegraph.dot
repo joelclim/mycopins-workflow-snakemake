@@ -1,0 +1,376 @@
+digraph snakemake_dag {
+    graph[bgcolor="transparent", margin=0.25, pad=0.4, nodesep=0.9, ranksep=1.15, newrank=true, splines=polyline];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+	subgraph cluster_main {
+		color="transparent";
+		penwidth=0;
+		margin=20;
+
+0 [ shape=none, margin=0, label=<<table border="2" color="#D95757" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">all</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/dna-derived.txt</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/event.txt</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/occurrence-core.txt</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/occurrence.txt</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_clusters.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_counts.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_clusters.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_organisms.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_sample_clusters.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_community.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_environment.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_organisms.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_sample_clusters.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_community.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_environment.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_organisms.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_sample_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right">  </td> </tr>
+</table>>]
+1 [ shape=none, margin=0, label=<<table border="2" color="#BBD957" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">clean_scata_counts</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">config/config.yaml</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/report/{batch}_cleaned_counts_qc.txt</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_counts.csv</font></td></tr>
+</table>>]
+2 [ shape=none, margin=0, label=<<table border="2" color="#D9CF57" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">clean_scata_clusters</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">config/config.yaml</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_clusters.csv</font></td></tr>
+</table>>]
+3 [ shape=none, margin=0, label=<<table border="2" color="#57D9BB" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">identify_clusters</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">&lt;input function&gt;</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_clusters.csv</font></td></tr>
+</table>>]
+4 [ shape=none, margin=0, label=<<table border="2" color="#D97F57" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">capture_organisms</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_organisms.csv</font></td></tr>
+</table>>]
+5 [ shape=none, margin=0, label=<<table border="2" color="#D9A757" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">capture_sample_clusters</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_counts.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_sample_clusters.csv</font></td></tr>
+</table>>]
+6 [ shape=none, margin=0, label=<<table border="2" color="#57A7D9" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">reduce_batches</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">&lt;input function&gt;</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">&lt;input function&gt;</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">&lt;input function&gt;</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">&lt;input function&gt;</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_community.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_environment.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_organisms.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_sample_clusters.csv</font></td></tr>
+</table>>]
+7 [ shape=none, margin=0, label=<<table border="2" color="#57CFD9" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">identify_counts</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_cleaned_counts.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_complete_counts.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_mycopins_community.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/{batch}_mycopins_environment.csv</font></td></tr>
+</table>>]
+8 [ shape=none, margin=0, label=<<table border="2" color="#577FD9" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">reduce_transects</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_community.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_environment.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_organisms.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/mycopins_{transect}_sample_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_community.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_environment.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_organisms.csv</font></td></tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_sample_clusters.csv</font></td></tr>
+</table>>]
+9 [ shape=none, margin=0, label=<<table border="2" color="#6BD957" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">generate_gbif_event_core</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">config/config.yaml</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_environment.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/event.txt</font></td></tr>
+</table>>]
+10 [ shape=none, margin=0, label=<<table border="2" color="#57D96B" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">generate_gbif_event_occurrence</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">config/config.yaml</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_community.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_environment.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_organisms.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_sample_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/occurrence.txt</font></td></tr>
+</table>>]
+11 [ shape=none, margin=0, label=<<table border="2" color="#93D957" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">generate_gbif_dna_derived</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">config/config.yaml</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_community.csv</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/tables/oulanka_mycopins_sample_clusters.csv</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/dna-derived.txt</font></td></tr>
+</table>>]
+12 [ shape=none, margin=0, label=<<table border="2" color="#57D993" cellspacing="3" cellborder="0" bgcolor="white">
+<tr><td>
+<b><font point-size="18">generate_gbif_occurrence_core</font></b>
+</td></tr>
+<hr/>
+<tr><td align="left"> <b><font point-size="14">&#8618; input</font></b> </td></tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/event.txt</font></td>
+</tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/occurrence.txt</font></td>
+</tr>
+<hr/>
+<tr><td align="right"> <b><font point-size="14">output &rarr;</font></b> </td> </tr>
+<tr>
+<td align="left"><font face="monospace">results/report/ipt_gbif/occurrence-core.txt</font></td></tr>
+</table>>]
+		main_anchor [shape=point, style=invis, width=0, height=0, label=""]
+	}
+	subgraph cluster_legend {
+		label="Legend";
+		labelloc="t";
+		fontsize=16;
+		fontname=sans;
+		color="#808080";
+		style="rounded,filled";
+		fillcolor="white";
+		penwidth=1.5;
+		margin=16;
+
+		legend [ shape=plain, margin=0, label=<<table border="1" color="#808080" cellspacing="0" cellborder="1" cellpadding="7" bgcolor="white">
+		<tr>
+			<td bgcolor="white" align="center"><b><font point-size="15">{batch}</font></b></td>
+			<td bgcolor="white" align="center"><b><font point-size="15">{transect}</font></b></td>
+		</tr>
+		<tr>
+			<td align="left"><font face="monospace">fa23_transectC</font></td>
+			<td align="left"><font face="monospace">transectA</font></td>
+		</tr>
+		<tr>
+			<td align="left"><font face="monospace">sp24_transectC</font></td>
+			<td align="left"><font face="monospace">transectB</font></td>
+		</tr>
+		<tr>
+			<td align="left"><font face="monospace">sp24_transectA_1</font></td>
+			<td align="left"><font face="monospace">transectC</font></td>
+		</tr>
+		<tr><td align="left"><font face="monospace">sp24_transectA_2</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">su24_transectA_1</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">su24_transectA_2</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">fa24_transectB_1</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">fa24_transectB_2</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">fa24_transectB_3</font></td><td border="0"></td></tr>
+		<tr><td align="left"><font face="monospace">fa24_transectB_4</font></td><td border="0"></td></tr>
+		</table>>]
+	}
+	{ rank=same; main_anchor; legend; }
+	4 -> main_anchor [style=invis, weight=1, minlen=1];
+	11 -> main_anchor [style=invis, weight=1, minlen=1];
+	main_anchor -> legend [style=invis, weight=1, minlen=4];
+	6 -> 0
+	8 -> 0
+	4 -> 0
+	11 -> 0
+	3 -> 0
+	10 -> 0
+	2 -> 0
+	9 -> 0
+	12 -> 0
+	5 -> 0
+	1 -> 0
+	2 -> 3
+	3 -> 4
+	3 -> 5
+	1 -> 5
+	5 -> 6
+	4 -> 6
+	7 -> 6
+	3 -> 7
+	1 -> 7
+	6 -> 8
+	8 -> 9
+	8 -> 10
+	8 -> 11
+	10 -> 12
+	9 -> 12
+}
